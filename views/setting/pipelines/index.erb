@@ -1,0 +1,184 @@
+<!-- START Sub-Navbar with Header and Breadcrumbs-->
+<div class="sub-navbar sub-navbar__header-breadcrumbs">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12 sub-navbar-column">
+        <div class="sub-navbar-header">
+          <h3>管线设置</h3>
+        </div>
+        <ol class="breadcrumb navbar-text navbar-right no-bg">
+          <li class="current-parent">
+            <a class="current-parent" href="/monitor/asset-status'">
+              <i class="fa fa-fw fa-dashboard"></i>
+            </a>
+          </li>
+
+          <li class="current-parent">
+            <a class="current-parent" href="/setting">
+              资源信息设置
+            </a>
+          </li>
+          <li class="active">管线设置</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- END Sub-Navbar with Header and Breadcrumbs-->
+
+<div class="container-fluid" style="">
+
+  <div class="row">
+    <div class="col-lg-12">
+
+      <div class="panel panel-default">
+        <div class="panel-heading panel-heading b-b-warning b-b-2">
+          <a href="javascript:$('#myModal').modal('show');" class="btn btn-primary btn-sm pull-right">新建</a>
+          <h3 class="panel-title">管线列表</h3>
+        </div>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th class="small text-muted text-uppercase">
+                <strong>名称</strong>
+              </th>
+              <th class="small text-muted text-uppercase">
+                <strong>编号</strong>
+              </th>
+              <th class="small text-muted text-uppercase">
+                <strong>起始位置</strong>
+              </th>
+              <th class="small text-muted text-uppercase">
+                <strong>终点位置</strong>
+              </th>
+              <th class="small text-muted text-uppercase">
+                <strong>备注</strong>
+              </th>
+              <th class="small text-muted text-uppercase text-right">
+                <strong>操作</strong>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @pipelines.each do |pl| %>
+            <tr>
+              <td class="v-a-m">
+                <a href="javascript:update_pipeline(<%= pl.id %>);">
+                  <%= pl.name %>
+                </a>
+              </td>
+              <td class="v-a-m">
+                <span class="text-white">
+                  <%= pl.no %></span>
+              </td>
+              <td class="v-a-m">
+                <span class="text-white">
+                  <%= pl.start_position %></span>
+              </td>
+              <td class="v-a-m">
+                <span class="text-white">
+                  <%= pl.end_position %></span>
+              </td>
+              <td class="v-a-m">
+                <span class="text-white">
+                  <%= pl.remark %></span>
+              </td>
+              <td class="text-right v-a-m">
+                <div class="btn-group" role="group" aria-label="...">
+
+                  <a href="javascript:update_pipeline(<%= pl.id %>);" class="btn btn-default">
+                    <i class="fa fa-wrench"></i>
+                  </a>
+
+                  <a onclick="return confirm('确认删除吗 ?')" href="/setting/pipelines/delete/<%= pl.id %>" class="btn btn-default">
+                    <i class="fa fa-close"></i>
+                  </a>
+                </div>
+              </td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <div class="panel-footer">
+          <%= will_paginate @pipelines, renderer: BootstrapPagination::Sinatra %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&#xD7;</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">新建管线</h4>
+      </div>
+      <form class="form-horizontal" action="/setting/pipelines" method="post">
+        <input type="hidden" name="id" id='id'>
+        <input type="hidden" id="current_page" name='current_page' value='<%= params[:page] %>'>
+
+        <div class="modal-body" id='modal-body'>
+          <div class="form-group">
+            <label for="name" class="col-sm-3 control-label">名称</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="name" name='name'>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="no" class="col-sm-3 control-label">编号</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="no" name="no">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="start_position" class="col-sm-3 control-label">起始位置</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="start_position" name="start_position">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="end_position" class="col-sm-3 control-label">终点位置</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="end_position" name="end_position">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="remark" class="col-sm-3 control-label">备注</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="remark" name="remark">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input type="submit" class="btn btn-primary"  name="" value="保存">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+
+function update_pipeline(pipeline_id){
+  $.getJSON( "/ajax/get_pipeline/"+pipeline_id, function( data ) {
+    $('#id').val(data.id);
+    $('#name').val(data.name);
+    $('#no').val(data.no);
+    $('#start_position').val(data.start_position);
+    $('#end_position').val(data.end_position);
+    $('#remark').val(data.remark);
+
+    $('#myModal').modal('show');
+  });
+}
+
+</script>

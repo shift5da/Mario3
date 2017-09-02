@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>OneRIM平台</title>
+
+    <link rel="stylesheet" href="/style/app.css">
+
+    <script src="/javascript/lib.js"></script>
+
+    <!-- 高德地图 JavaScript -->
+    <script src="http://cache.amap.com/lbs/static/es5.min.js"></script>
+    <script src="http://webapi.amap.com/maps?v=1.3&key=7869a64ef800e0763b199fd87f5b1434"></script>
+    <script src="//webapi.amap.com/ui/1.0/main.js"></script>
+
+    <!-- ECharts JavaScript -->
+    <script src="/echarts/echarts.common.min.js"></script>
+
+  </head>
+
+  <body class="sidebar-slim">
+
+    <div class="main-wrap">
+      <nav class="navigation">
+        <!-- START Navbar -->
+        <div class="navbar-inverse navbar navbar-fixed-top">
+          <div class="container-fluid">
+
+            <div class="navbar-header">
+              <a class="current navbar-brand" href="/">
+                <img alt="Spin Logo Inverted" class="h-20" src="/images/logo-primary-white2X.png">
+              </a>
+              <button title="" data-original-title="" class="action-right-sidebar-toggle navbar-toggle collapsed" data-target="#navdbar" data-toggle="collapse" type="button">
+                <i class="fa fa-fw fa-align-right text-white"></i>
+              </button>
+              <button class="navbar-toggle collapsed" data-target="#navbar" data-toggle="collapse" type="button">
+                <i class="fa fa-fw fa-user text-white"></i>
+              </button>
+              <button class="action-sidebar-open navbar-toggle collapsed" type="button">
+                <i class="fa fa-fw fa-bars text-white"></i>
+              </button>
+            </div>
+
+            <div class="collapse navbar-collapse" id="navbar">
+
+              <!-- START Search Mobile -->
+              <div class="form-group hidden-lg hidden-md hidden-sm">
+                <div class="input-group hidden-lg hidden-md">
+                  <input class="form-control" placeholder="Search for..." type="text">
+                  <span class="input-group-btn">
+                    <button class="btn btn-primary" type="button">
+                      <i class="fa fa-fw fa-search"></i>
+                    </button>
+                  </span>
+                </div>
+              </div>
+              <!-- END Search Mobile -->
+
+              <!-- START Left Side Navbar -->
+              <ul class="nav navbar-nav navbar-left clearfix yamm">
+
+                <!-- START Switch Sidebar ON/OFF -->
+                <li id="sidebar-switch" class="hidden-xs">
+                  <a data-original-title="菜单的打开/隐藏" class="action-toggle-sidebar-slim" data-placement="bottom" data-toggle="tooltip" href="javascript:%20void(0)" title="">
+                    <i class="fa fa-lg fa-bars fa-fw"></i>
+                  </a>
+                </li>
+                <!-- END Switch Sidebar ON/OFF -->
+
+                <li class="spin-search-box clearfix hidden-xs">
+                  <a href="javascript:%20void(0)" class="pull-left">
+                    <i class="fa fa-search fa-lg icon-inactive"></i>
+                    <i class="fa fa-close fa-lg icon-active"></i>
+                  </a>
+                  <div class="input-group input-group-sm pull-left p-10">
+                    <input class="form-control" placeholder="输入关键词查询..." type="text">
+                    <span class="input-group-btn">
+                      <button class="btn btn-primary" type="button" onclick="window.location.href='/search'">
+                        <i class="fa fa-search"></i>
+                      </button>
+                    </span>
+                  </div>
+                </li>
+              </ul>
+              <!-- START Left Side Navbar -->
+
+              <!-- START Right Side Navbar -->
+              <ul class="nav navbar-nav navbar-right">
+
+                <li role="separator" class="divider hidden-lg hidden-md hidden-sm"></li>
+                <li class="dropdown-header hidden-lg hidden-md hidden-sm text-gray-lighter text-uppercase">
+                  <strong>Your Profile</strong>
+                </li>
+
+                <!-- START Notification -->
+                <li class="dropdown">
+
+                  <!-- START Icon Notification with Badge (10)-->
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:%20void(0)" role="button">
+                    <i class="fa fa-lg fa-fw fa-bell hidden-xs"></i>
+                    <span class="label label-danger label-pill label-with-icon hidden-xs">10</span>
+                    <span class="fa fa-fw fa-angle-down hidden-lg hidden-md hidden-sm"></span>
+                  </a>
+                  <!-- END Icon Notification with Badge (10)-->
+
+                  <!-- START Notification Dropdown Menu -->
+                  <ul class="dropdown-menu dropdown-menu-right p-t-0 b-t-0 p-b-0 b-b-0 b-a-0">
+                    <li>
+                      <div class="yamm-content p-t-0 p-r-0 p-l-0 p-b-0">
+                        <ul class="list-group m-b-0 b-b-0">
+                          <li class="list-group-item b-r-0 b-l-0 b-r-0 b-t-r-0  b-t-l-0 b-b-2 w-350">
+                            <small class="text-uppercase">
+                              <strong>告警</strong>
+                            </small>
+                            <a role="button" href="" class="btn m-t-0 btn-xs btn-default pull-right">
+                              <i class="fa fa-fw fa-gear"></i>
+                            </a>
+                          </li>
+
+                          <!-- START Scroll Inside Panel -->
+                          <li class="list-group-item b-a-0 p-x-0 p-y-0 b-t-0">
+                            <div class="scroll-300 custom-scrollbar">
+                              <a href="#" class="list-group-item b-r-0 b-t-0 b-l-0">
+                                <div class="media">
+                                  <div class="media-left">
+                                    <span class="fa-stack fa-lg">
+                                      <i class="fa fa-circle-thin fa-stack-2x text-danger"></i>
+                                      <i class="fa fa-close fa-stack-1x fa-fw text-danger"></i>
+                                    </span>
+                                  </div>
+                                  <div class="media-body">
+                                    <h5 class="m-t-0">
+                                      <span>徐汇光交箱GJ108，倾斜告警</span>
+                                    </h5>
+                                    <p class="text-nowrap small m-b-0">
+                                      <span>【智能光交箱监控系统】2017-6-18 10:56:23</span>
+                                    </p>
+                                  </div>
+                                </div>
+                              </a>
+
+                              <a href="#" class="list-group-item b-r-0 b-l-0">
+                                <div class="media">
+                                  <div class="media-left">
+                                    <span class="fa-stack fa-lg">
+                                      <i class="fa fa-circle-thin fa-stack-2x text-warning"></i>
+                                      <i class="fa fa-exclamation fa-stack-1x fa-fw text-warning"></i>
+                                    </span>
+                                  </div>
+                                  <div class="media-body">
+                                    <h5 class="m-t-0">
+                                      <span>徐汇光交箱GJ103，门打开告警</span>
+                                    </h5>
+                                    <p class="text-nowrap small m-b-0">
+                                      <span>【智能光交箱监控系统】2017-6-18 10:52:45</span>
+                                    </p>
+                                  </div>
+                                </div>
+                              </a>
+
+                              <a href="#" class="list-group-item b-r-0 b-t-0 b-l-0">
+                                <div class="media">
+                                  <div class="media-left">
+                                    <span class="fa-stack fa-lg">
+                                      <i class="fa fa-circle-thin fa-stack-2x text-danger"></i>
+                                      <i class="fa fa-close fa-stack-1x fa-fw text-danger"></i>
+                                    </span>
+                                  </div>
+                                  <div class="media-body">
+                                    <h5 class="m-t-0">
+                                      <span>浦东光交箱GJ508，倾斜告警</span>
+                                    </h5>
+                                    <p class="text-nowrap small m-b-0">
+                                      <span>【智能光交箱监控系统】2017-6-18 10:36:13</span>
+                                    </p>
+                                  </div>
+                                </div>
+                              </a>
+
+                              <a href="#" class="list-group-item b-r-0 b-l-0">
+                                <div class="media">
+                                  <div class="media-left">
+                                    <span class="fa-stack fa-lg">
+                                      <i class="fa fa-circle-thin fa-stack-2x text-warning"></i>
+                                      <i class="fa fa-exclamation fa-stack-1x fa-fw text-warning"></i>
+                                    </span>
+                                  </div>
+                                  <div class="media-body">
+                                    <h5 class="m-t-0">
+                                      <span>一干光缆，钦州松江，新城路塔城东路交界处，有大型机械施工</span>
+                                    </h5>
+                                    <p class="text-nowrap small m-b-0">
+                                      <span>【智能管道第三方施工监控系统】2017-6-18 9:28:15</span>
+                                    </p>
+                                  </div>
+                                </div>
+                              </a>
+                            </div>
+                          </li>
+
+                          <!-- END Scroll Inside Panel -->
+                          <li class="list-group-item b-a-0 p-x-0 p-y-0 r-a-0 b-b-0">
+                            <a class="list-group-item text-center b-r-0 b-b-0 b-l-0 b-r-b-r-0 b-r-b-l-0" href="http://spin.webkom.co/pages/timeline.html">
+                              查看更多告警信息
+                              <i class="fa fa-angle-right"></i>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+
+                    </li>
+                  </ul>
+                  <!-- END Notification Dropdown Menu -->
+
+                </li>
+                <!-- END Notification -->
+
+                <!-- START Notification -->
+                <li class="dropdown">
+
+                  <!-- START Icon Notification with Badge (10)-->
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:%20void(0)" role="button">
+                    <i class="fa fa-lg fa-fw fa-bullhorn hidden-xs"></i>
+                    <span class="hidden-sm hidden-md hidden-lg">
+                      公告
+                      <span class="badge badge-primary m-l-1">10</span>
+                    </span>
+                    <span class="label label-primary label-pill label-with-icon hidden-xs">10</span>
+                    <span class="fa fa-fw fa-angle-down hidden-lg hidden-md hidden-sm"></span>
+                  </a>
+                  <!-- END Icon Notification with Badge (10)-->
+
+                  <!-- START Notification Dropdown Menu -->
+                  <ul class="dropdown-menu dropdown-menu-right p-t-0 b-t-0 p-b-0 b-b-0 b-a-0">
+                    <li>
+                      <div class="yamm-content p-t-0 p-r-0 p-l-0 p-b-0">
+                        <ul class="list-group m-b-0 b-b-0">
+                          <li class="list-group-item b-r-0 b-l-0 b-r-0 b-t-r-0  b-t-l-0 b-b-2 w-350">
+                            <small class="text-uppercase">
+                              <strong>公告</strong>
+                            </small>
+                            <a role="button" href="http://spin.webkom.co/apps/settings-edit.html" class="btn m-t-0 btn-xs btn-default pull-right">
+                              <i class="fa fa-fw fa-gear"></i>
+                            </a>
+                          </li>
+
+                          <!-- START Scroll Inside Panel -->
+                          <li class="list-group-item b-a-0 p-x-0 p-y-0 b-t-0">
+                            <div class="scroll-300 custom-scrollbar">
+                              <a href="#" class="list-group-item b-r-0 b-t-0 b-l-0">
+                                <div class="media">
+                                  <div class="media-left">
+                                    <span class="fa-stack fa-lg">
+                                      <i class="fa fa-circle-thin fa-stack-2x text-primary"></i>
+                                      <i class="fa fa-info fa-stack-1x text-primary"></i>
+                                    </span>
+                                  </div>
+                                  <div class="media-body">
+                                    <h5 class="m-t-0">
+                                      <span>【网络部】2016-7-3，关于哑资源普查情况总结会议，长寿路15楼1号会议室</span>
+                                    </h5>
+                                    <p class="text-nowrap small m-b-0">
+                                      <span>【网络部】2016-6-18 10:34:54</span>
+                                    </p>
+                                  </div>
+                                </div>
+                              </a>
+                              <a href="#" class="list-group-item b-r-0 b-l-0">
+                                <div class="media">
+                                  <div class="media-left">
+                                    <span class="fa-stack fa-lg">
+                                      <i class="fa fa-circle-thin fa-stack-2x text-primary"></i>
+                                      <i class="fa fa-info fa-stack-1x text-primary"></i>
+                                    </span>
+                                  </div>
+                                  <div class="media-body">
+                                    <h5 class="m-t-0">
+                                      <span>【网络部】2016-7-5，关于一干光缆下半年巡检工作会议，长寿路15楼1号会议室</span>
+                                    </h5>
+                                    <p class="text-nowrap small m-b-0">
+                                      <span>【网络部】2016-6-17 16:34:12</span>
+                                    </p>
+                                  </div>
+                                </div>
+                              </a>
+                              <a href="http://spin.webkom.co/pages/timeline.html" class="list-group-item b-r-0 b-l-0">
+                                <div class="media">
+                                  <div class="media-left">
+                                    <span class="fa-stack fa-lg">
+                                      <i class="fa fa-circle-thin fa-stack-2x text-success"></i>
+                                      <i class="fa fa-check fa-stack-1x text-success"></i>
+                                    </span>
+                                  </div>
+                                  <div class="media-body">
+                                    <h5 class="m-t-0">
+                                      <span>【网络部】2016-7-6，关于开展光交箱跳纤整治的会议，长寿路15楼1号会议室</span>
+                                    </h5>
+                                    <p class="text-nowrap small m-b-0">
+                                      <span>【网络部】2016-6-17 14:34:12</span>
+                                    </p>
+                                  </div>
+                                </div>
+                              </a>
+
+                            </div>
+                          </li>
+
+                          <!-- END Scroll Inside Panel -->
+                          <li class="list-group-item b-a-0 p-x-0 p-y-0 r-a-0 b-b-0">
+                            <a class="list-group-item text-center b-r-0 b-b-0 b-l-0 b-r-b-r-0 b-r-b-l-0" href="http://spin.webkom.co/pages/timeline.html">
+                              查看更多
+                              <i class="fa fa-angle-right"></i>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+
+                    </li>
+                  </ul>
+                  <!-- END Notification Dropdown Menu -->
+
+                </li>
+                <!-- END Notification -->
+
+
+                </li>
+
+                <li class="dropdown">
+                  <a class="dropdown-toggle user-dropdown" data-toggle="dropdown" href="javascript:%20void(0)" role="button">
+                    <span class="m-r-1">王刚</span>
+                    <div class="avatar avatar-image avatar-sm avatar-inline loaded">
+                      <img alt="User" src="/images/avatar-default-100.png">
+                    </div>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li class="dropdown-header text-gray-lighter">
+                      <strong class="text-uppercase">账号</strong>
+                    </li>
+                    <li>
+                      <a href="/logout">退出</a>
+                    </li>
+                  </ul>
+                </li>
+
+              </ul>
+              <!-- END Right Side Navbar -->
+            </div>
+
+          </div>
+        </div>
+        <!-- END Navbar -->
+
+        <!-- START Sidebars -->
+        <aside data-ps-id="61a0c5ae-300e-a9f7-0a29-d00e890030a6" class="navbar-default sidebar">
+          <div class="sidebar-overlay-head">
+            <img src="/images/logo-primary-white2X.png" alt="Logo" width="90">
+            <a href="javascript:%20void(0)" class="sidebar-switch action-sidebar-close">
+              <i class="fa fa-times"></i>
+            </a>
+          </div>
+          <div class="sidebar-logo">
+            <img class="logo-default" src="./images/logo-big-primary-white2X.png" alt="Logo" width="53">
+            <img class="logo-slim" src="./images/logo-slim-primary2X.png" alt="Logo" height="13">
+          </div>
+
+          <div class="sidebar-content">
+
+            <div class="sidebar-default-visible text-muted small text-uppercase sidebar-section p-y-2">
+              <strong>导航</strong>
+            </div>
+
+            <!-- START Tree Sidebar Common -->
+            <ul class="side-menu">
+
+              <li class="<%= 'active' if session[:current_menu].eql? 'monitor' %>">
+                <a href="/monitor/asset-status"  data-original-title="资源状态监控" data-placement="right" data-toggle="tooltip">
+                  <i class="fa fa-dashboard fa-lg "></i>
+                  <span class="nav-label">资源状态监控</span>
+                </a>
+              </li>
+
+              <li class="<%= 'active' if session[:current_menu].eql? 'setting' %>">
+                <a href="/setting"  data-original-title="资源状态监控" data-placement="right" data-toggle="tooltip">
+                  <i class="fa fa-gear fa-lg "></i>
+                  <span class="nav-label">设置</span>
+                </a>
+              </li>
+
+              <li class="<%= 'active' if session[:current_menu].eql? 'broadband-family' %>">
+                <a href="/broadband-family" data-original-title="家宽业务" data-placement="right" data-toggle="tooltip">
+                  <i class="fa fa-desktop fa-lg "></i>
+                  <span class="nav-label">家宽业务</span>
+                </a>
+              </li>
+              <li class="<%= 'active' if session[:current_menu].eql? 'asset' %>">
+                <a href="/asset" data-original-title="哑资源" data-placement="right" data-toggle="tooltip">
+                  <i class="fa fa-cubes fa-lg "></i>
+                  <span class="nav-label">哑资源</span>
+                </a>
+              </li>
+              <li class="">
+                <a href="#" data-original-title="用户投诉" data-placement="right" data-toggle="tooltip">
+                  <i class="fa fa-phone fa-lg "></i>
+                  <span class="nav-label">用户投诉</span>
+                </a>
+              </li>
+              <li class="<%= 'active' if session[:current_menu].eql? 'inspection' %>">
+                <a href="/inspection" data-original-title="巡检管理" data-placement="right" data-toggle="tooltip">
+                  <i class="fa fa-check-square-o fa-lg "></i>
+                  <span class="nav-label">巡检管理</span>
+                </a>
+              </li>
+              <li class="">
+                <a href="#" data-original-title="施工管理" data-placement="right" data-toggle="tooltip">
+                  <i class="fa fa-wrench fa-lg "></i>
+                  <span class="nav-label">施工管理</span>
+                </a>
+              </li>
+              <li class="<%= 'active' if session[:current_menu].eql? 'search' %>">
+                <a href="/search" data-original-title="查询" data-placement="right" data-toggle="tooltip">
+                  <i class="fa fa-search fa-lg "></i>
+                  <span class="nav-label">查询</span>
+                </a>
+              </li>
+
+            </ul>
+            <!-- END Tree Sidebar Common  -->
+
+
+
+          </aside>
+          <!-- END Sidebars -->
+        </nav>
+
+        <div style="min-height: 1316px;" class="content">
+          <%= yield %>
+        </div>
+
+        <!-- START Footer -->
+        <footer>
+          <div class="container-fluid">
+            <p class="text-gray-dark">
+              <strong class="m-r-1">上海远洲管业科技股份有限公司
+              </strong>
+              <span class="text-gray-dark">© 2009 - 2017
+                上海市, 中国</span>
+            </p>
+          </div>
+        </footer>
+        <!-- END Footer -->
+
+      </div>
+
+      <!-- Bower Libraries Styles -->
+      <link rel="stylesheet" href="/style/lib.css">
+      <script src="/javascript/app.js"></script>
+
+      <script src="/javascript/highstock.min.js"></script>
+      <script src="/javascript/highcharts-settings.js"></script>
+      <script src="/javascript/highstock-settings.js"></script>
+      <script src="/javascript/highcharts-highstock-theme.js"></script>
+      <script src="/javascript/select2.min.js"></script>
+      <script src="/javascript/bootstrap-select.min.js"></script>
+      <script src="/javascript/plugins-init.js"></script>
+
+      <script src="/javascript/common.js"></script>
+
+
+    </body>
+
+  </html>

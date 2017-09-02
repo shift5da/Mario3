@@ -1,0 +1,173 @@
+<!-- START Sub-Navbar with Header and Breadcrumbs-->
+<div class="sub-navbar sub-navbar__header-breadcrumbs">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12 sub-navbar-column">
+        <div class="sub-navbar-header">
+          <h3>家宽业务</h3>
+        </div>
+        <ol class="breadcrumb navbar-text navbar-right no-bg">
+          <li class="current-parent">
+            <a class="current-parent" href="/">
+              <i class="fa fa-fw fa-home"></i>
+            </a>
+          </li>
+          <li>
+            <a href="/broadband-family">
+              家宽业务
+            </a>
+          </li>
+          <li class="active">带宽利用率统计</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid">
+
+  <div class="row">
+    <div class="col-lg-12">
+
+      <div class="panel panel-default">
+        <div class="panel-heading panel-heading b-b-warning b-b-2">
+          <div class="col-xs-2 pull-right">
+            <div class="input-group input-group-sm">
+              <input type="text" class="form-control" placeholder="输入关键字查询">
+              <span class="input-group-btn">
+                <button class="btn btn-sm btn-primary" type="button">
+                  <i class="fa fa-search"></i>
+                </button>
+              </span>
+            </div>
+            <!-- /input-group -->
+          </div>
+          <div class="btn-group pull-right">
+            <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              2017年<span class="caret m-l-1 text-gray-lighter"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="#">2016年</a>
+              </li>
+              <li>
+                <a href="#">2015年</a>
+              </li>
+            </ul>
+          </div>
+          <div class="btn-group pull-right" role="group">
+            <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              全市<span class="caret m-l-1 text-gray-lighter"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="#">黄浦区</a>
+              </li>
+              <li>
+                <a href="#">徐汇区</a>
+              </li>
+              <li>
+                <a href="#">静安区</a>
+              </li>
+              <li>
+                <a href="#">长宁区</a>
+              </li>
+              <li>
+                <a href="#">普陀区</a>
+              </li>
+              <li>
+                <a href="#">虹口区</a>
+              </li>
+            </ul>
+          </div>
+          <div class="btn-group pull-right" role="group">
+            <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              新入网<span class="caret m-l-1 text-gray-lighter"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="#">退网</a>
+              </li>
+              <li>
+                <a href="#">移机</a>
+              </li>
+            </ul>
+          </div>
+          <h3 class="panel-title">家宽业务使用情况实时分布图</h3>
+        </div>
+        <div class="panel-body">
+          <div id="broadband_family_map" style="min-height:800px"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+  var latlngs = new Array();
+  var x = 31.23966;
+  var y = 121.499859;
+
+  for (var i = 0; i < 2000; i++) {
+    var temp = {};
+    var x_ = 0;
+    var y_ = 0;
+    x_ = Math.random() * 0.6 - 0.25;
+    y_ = Math.random() * 0.6 - 0.25;
+    latlngs[i] = {
+      lng: y + y_,
+      lat: x + x_,
+      count: Math.floor((Math.random() * 100) + 1)
+    };
+
+    // latlngs[i] = new LatLng(x + x_, y + y_);
+  }
+
+  var map = new AMap.Map("broadband_family_map", {
+    resizeEnable: true,
+    mapStyle: 'amap://styles/grey',
+    center: [
+      121.499859, 31.23966
+    ],
+    zoom: 11
+  });
+  if (!isSupportCanvas()) {
+    alert('热力图仅对支持canvas的浏览器适用,您所使用的浏览器不能使用热力图功能,请换个浏览器试试~')
+  }
+  //详细的参数,可以查看heatmap.js的文档 http://www.patrick-wied.at/static/heatmapjs/docs.html 参数说明如下:
+  /* visible 热力图是否显示,默认为true
+ * opacity 热力图的透明度,分别对应heatmap.js的minOpacity和maxOpacity
+ * radius 势力图的每个点的半径大小
+ * gradient  {JSON} 热力图的渐变区间 . gradient如下所示
+ *	{
+ .2:'rgb(0, 255, 255)',
+ .5:'rgb(0, 110, 255)',
+ .8:'rgb(100, 0, 255)'
+ }
+ 其中 key 表示插值的位置, 0-1
+ value 为颜色值
+ */
+  var heatmap;
+  map.plugin(["AMap.Heatmap"], function () {
+    //初始化heatmap对象
+    heatmap = new AMap.Heatmap(map, {
+      radius: 25, //给定半径
+      opacity: [0, 0.8]
+      /*,gradient:{
+         0.5: 'blue',
+         0.65: 'rgb(117,211,248)',
+         0.7: 'rgb(0, 255, 0)',
+         0.9: '#ffea00',
+         1.0: 'red'
+         }*/
+    });
+    //设置数据集：该数据为北京部分“公园”数据
+    heatmap.setDataSet({data: latlngs, max: 80});
+  });
+  //判断浏览区是否支持canvas
+  function isSupportCanvas() {
+    var elem = document.createElement('canvas');
+    return !!(elem.getContext && elem.getContext('2d'));
+  }
+</script>

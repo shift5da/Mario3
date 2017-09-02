@@ -1,0 +1,64 @@
+<div class="row">
+  <div class="col-lg-12">
+    <ol class="breadcrumb">
+      <li>
+        <a href="/asset">资源信息管理</a>
+      </li>
+      <li class="active">光交箱信息</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <h4 class="page-header" style="margin-top:-6px;">徐汇光交GJ100</h4>
+  </div>
+</div>
+
+
+
+
+<div class="row">
+  <div class="col-lg-12">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs nav-justified">
+      <li class="active">
+        <a href="#occ_basic_info" data-toggle="tab">光交箱基本信息</a>
+      </li>
+      <li>
+        <a href="#occ_internal" data-toggle="tab">光交箱内部结构</a>
+      </li>
+      <li>
+        <a href="#occ_topology" data-toggle="tab" id='tab_occ_topology'>光交箱网络拓扑</a>
+      </li>
+      <li>
+        <a href="#occ_inspection" data-toggle="tab"  id='tab_occ_inspection'>光交箱巡检记录</a>
+      </li>
+      <li>
+        <a href="#occ_construction" data-toggle="tab"  id='tab_construction'>光交箱施工记录</a>
+      </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div class="tab-pane fade in active" id="occ_basic_info">
+        <%= erb :'asset/_occ_basic_info'%>
+      </div>
+      <div class="tab-pane fade" id="occ_internal">
+        <%= erb :'asset/_occ_internal'%>
+      </div>
+      <div class="tab-pane fade" id="occ_topology">
+        <%= erb :'asset/_occ_topology'%>
+      </div>
+      <div class="tab-pane fade" id="occ_inspection">
+        <%= erb :'asset/_occ_inspection'%>
+      </div>
+      <div class="tab-pane fade" id="occ_construction">
+        <%= erb :'asset/_occ_construction'%>
+      </div>
+    </div>
+  </div>
+</div>
+
+<link rel="stylesheet" href="/css/pages/asset/occ.css">
+<script src="/javascript/pages/asset/occ.js" charset="utf-8"></script>

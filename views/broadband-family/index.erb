@@ -1,0 +1,371 @@
+
+<!-- START Sub-Navbar with Header and Breadcrumbs-->
+<div class="sub-navbar sub-navbar__header-breadcrumbs">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12 sub-navbar-column">
+        <div class="sub-navbar-header">
+          <h3>家宽业务</h3>
+        </div>
+        <ol class="breadcrumb navbar-text navbar-right no-bg">
+          <li class="current-parent">
+            <a class="current-parent" href="../index.html">
+              <i class="fa fa-fw fa-home"></i>
+            </a>
+          </li>
+          <li class="active">家宽业务</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END Sub-Navbar with Header and Breadcrumbs-->
+
+<div class="container-fluid">
+
+  <!-- START EDIT CONTENT -->
+  <div class="row">
+    <div class="col-lg-12">
+
+      <div class="row m-t-2 m-b-0">
+        <div class="col-md-4 col-xs-4">
+          <h4 class="m-b-0 m-t-0 f-w-300">用户数统计</h4>
+        </div>
+        <div class="col-md-4 col-xs-4 col-xs-offset-4 col-md-offset-4 text-right">
+          <button type="button" class="btn btn-link btn-sm" onclick="window.location.href='/broadband-family/map'">切换到地图模式<i class="fa m-l-1 text-gray-lighter fa-map"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- START ROW Report Statisticts & Latest Transactions -->
+      <div class="row">
+
+        <!-- START Info Chart -->
+        <div class="col-lg-3">
+
+          <div class="panel panel-default bg-gray-darker b-a-0 m-t-2">
+            <div class="panel-body">
+
+              <div class="row">
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <p class="m-b-0 m-t-0 text-gray-lighter">上海市家宽业务总数</p>
+                  <h1 class="f-w-300 display-3 m-t-0 text-warning">236,543 户</h1>
+                </div>
+
+                <div class="col-lg-12 col-md-3 col-sm-3 col-xs-6">
+                  <p class="m-b-0 m-t-0 text-gray-lighter">2017年新增用户</p>
+                  <h1 class="f-w-300 m-t-0 text-info">34,672 户</h1>
+                </div>
+
+                <div class="col-lg-12 col-md-3 col-sm-3 col-xs-6">
+                  <p class="m-b-0 m-t-0 text-gray-lighter">2017年平均装机时间</p>
+                  <h1 class="f-w-300 m-t-0 text-success">48 小时</h1>
+                </div>
+
+                <div class="col-lg-12 col-md-3 col-sm-3 col-xs-6">
+                  <p class="m-b-0 m-t-0 text-gray-lighter">2017年装机及时率</p>
+                  <h1 class="f-w-300 m-t-0 text-primary">98.7 %</h1>
+                </div>
+
+                <div class="col-lg-12 col-md-3 col-sm-3 col-xs-6">
+                  <p class="m-b-0 m-t-0 text-gray-lighter">2017年退网用户数</p>
+                  <h1 class="f-w-300 m-t-0 text-danger">2986 户</h1>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+        <!-- END Info Chart -->
+
+        <!-- START Chart -->
+        <div class="col-lg-9">
+          <div class="row m-t-2">
+            <div class="col-md-8 col-sm-8 col-xs-8">
+              <div class="btn-group" role="group" aria-label="...">
+
+                <div class="btn-group" role="group">
+                  <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    2017年<span class="caret m-l-1 text-gray-lighter"></span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a href="#">2016年</a>
+                    </li>
+                    <li>
+                      <a href="#">2015年</a>
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="btn-group" role="group">
+                  <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    全市<span class="caret m-l-1 text-gray-lighter"></span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">黄浦区</a></li>
+                    <li><a href="#">徐汇区</a></li>
+                    <li><a href="#">静安区</a></li>
+                    <li><a href="#">长宁区</a></li>
+                    <li><a href="#">普陀区</a></li>
+                    <li><a href="#">虹口区</a></li>
+                  </ul>
+                </div>
+
+                <div class="btn-group" role="group">
+                  <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    新入网<span class="caret m-l-1 text-gray-lighter"></span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a href="#">退网</a>
+                    </li>
+                    <li>
+                      <a href="#">移机</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+            </div>
+            <div class="col-md-2 col-sm-2 col-sm-offset-2 col-xs-2 col-xs-offset-2 col-md-offset-2 text-right">
+              <button type="button" class="btn btn-sm btn-primary">根据条件查询</button>
+            </div>
+          </div>
+
+          <div class="highcharts-line-analytics m-t-2"></div>
+        </div>
+        <!-- END Chart -->
+
+      </div>
+      <!-- END ROW Report Statisticts & Latest Transactions -->
+
+      <div class="row m-t-2">
+        <div class="col-md-4 col-xs-4 col-sm-4">
+          <h4 class="m-b-0 m-t-0 f-w-300">业务套餐情况统计</h4>
+        </div>
+      </div>
+
+      <!-- START Table Devices -->
+      <div class="row">
+
+        <!-- START Table -->
+        <div class="col-lg-10 col-md-9">
+          <div class="table-responsive">
+            <table class="table table-hover table-responsive">
+              <thead>
+                <tr>
+                  <th class="small text-muted text-uppercase w-5">
+                    <strong></strong>
+                  </th>
+                  <th class="small text-muted text-uppercase">
+                    <strong>套餐类型</strong>
+                  </th>
+                  <th class="small text-muted text-uppercase">
+                    <strong>套餐价格</strong>
+                  </th>
+                  <th class="small text-muted text-uppercase">
+                    <strong>用户数</strong>
+                  </th>
+                  <th class="small text-muted text-uppercase">
+                    <strong>2017年新增用户数</strong>
+                  </th>
+                  <th class="small text-muted text-uppercase">
+                    <strong>增长率</strong>
+                  </th>
+                  <th class="small text-muted text-right text-uppercase">
+                    <strong>平均周使用时长</strong>
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody>
+
+                <tr>
+                  <td>
+                    <i class="fa fa-fw fa-angle-right"></i>
+                  </td>
+                  <td class="text-white">
+                    8M套餐
+                  </td>
+                  <td>
+                    <span>78/月</span>
+                  </td>
+                  <td>
+                    <span>74135</span>
+                  </td>
+                  <td>
+                    <span>3219 户</span>
+                  </td>
+                  <td>
+                    <span>4.8 %</span>
+                  </td>
+                  <td class="text-right">
+                    <span>108 小时</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <i class="fa fa-fw fa-angle-right"></i>
+                  </td>
+                  <td class="text-white">
+                    8M套餐
+                  </td>
+                  <td>
+                    <span>78/月</span>
+                  </td>
+                  <td>
+                    <span>74135</span>
+                  </td>
+                  <td>
+                    <span>3219 户</span>
+                  </td>
+                  <td>
+                    <span>4.8 %</span>
+                  </td>
+                  <td class="text-right">
+                    <span>108 小时</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <i class="fa fa-fw fa-angle-right"></i>
+                  </td>
+                  <td class="text-white">
+                    10M套餐
+                  </td>
+                  <td>
+                    <span>98/月</span>
+                  </td>
+                  <td>
+                    <span>54278</span>
+                  </td>
+                  <td>
+                    <span>1234 户</span>
+                  </td>
+                  <td>
+                    <span>1.8 %</span>
+                  </td>
+                  <td class="text-right">
+                    <span>87 小时</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <i class="fa fa-fw fa-angle-right"></i>
+                  </td>
+                  <td class="text-white">
+                    12M套餐
+                  </td>
+                  <td>
+                    <span>108/月</span>
+                  </td>
+                  <td>
+                    <span>65287</span>
+                  </td>
+                  <td>
+                    <span>4523 户</span>
+                  </td>
+                  <td>
+                    <span>7.8 %</span>
+                  </td>
+                  <td class="text-right">
+                    <span>128 小时</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <i class="fa fa-fw fa-angle-right"></i>
+                  </td>
+                  <td class="text-white">
+                    20M套餐
+                  </td>
+                  <td>
+                    <span>158/月</span>
+                  </td>
+                  <td>
+                    <span>94338</span>
+                  </td>
+                  <td>
+                    <span>5624 户</span>
+                  </td>
+                  <td>
+                    <span>6.3 %</span>
+                  </td>
+                  <td class="text-right">
+                    <span>129 小时</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <i class="fa fa-fw fa-angle-right"></i>
+                  </td>
+                  <td class="text-white">
+                    100M套餐
+                  </td>
+                  <td>
+                    <span>198/月</span>
+                  </td>
+                  <td>
+                    <span>54213</span>
+                  </td>
+                  <td>
+                    <span>9834 户</span>
+                  </td>
+                  <td>
+                    <span>18.6 %</span>
+                  </td>
+                  <td class="text-right">
+                    <span>118 小时</span>
+                  </td>
+                </tr>
+
+
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+        <!-- END Table -->
+
+        <!-- START Chart with Legend -->
+        <div class="col-lg-2 col-md-3">
+
+          <div class="panel panel-default bg-gray-darker b-a-0 m-t-2">
+            <div class="panel-body">
+              <p class="data-attributes text-left m-t-0 m-b-1">
+                <span data-peity="{ &quot;fill&quot;: [&quot;#2D99DC&quot;, &quot;#35BDA8&quot;, &quot;#86B34D&quot;, &quot;#E66C40&quot;, &quot;#CB3E4B&quot;],  &quot;innerRadius&quot;: 18, &quot;radius&quot;: 28 }">1,2,3,4,7</span>
+              </p>
+
+              <i class="fa fa-fw fa-circle m-r-1 text-primary"></i>
+              8M套餐
+              <br>
+              <i class="fa fa-fw fa-circle m-r-1 text-info"></i>
+              12M套餐
+              <br>
+              <i class="fa fa-fw fa-circle m-r-1 text-success"></i>
+              20M套餐
+              <br>
+              <i class="fa fa-fw fa-circle m-r-1 text-warning"></i>
+              50M套餐
+              <br>
+              <i class="fa fa-fw fa-circle m-r-1 text-danger"></i>
+              100M套餐
+              <br>
+
+            </div>
+          </div>
+
+        </div>
+        <!-- END Chart with Legend -->
+      </div>
+      <!-- END Table Devices -->
+
+    </div>
+
+  </div>
+</div>
+<!-- END EDIT CONTENT -->

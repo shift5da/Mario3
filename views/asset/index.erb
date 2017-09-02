@@ -1,0 +1,143 @@
+<!-- START Sub-Navbar with Header and Breadcrumbs-->
+<div class="sub-navbar sub-navbar__header-breadcrumbs">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12 sub-navbar-column">
+        <div class="sub-navbar-header">
+          <h3>哑资源信息概览</h3>
+        </div>
+        <ol class="breadcrumb navbar-text navbar-right no-bg">
+          <li class="current-parent">
+            <a class="current-parent" href="/community/index">
+              <i class="fa fa-fw fa-home"></i>
+            </a>
+          </li>
+          <li class="active">哑资源信息概览</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- END Sub-Navbar with Header and Breadcrumbs-->
+
+<div class="container-fluid">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="panel panel-default">
+        <div class="panel-heading b-b-primary b-b-2">
+
+          <div class="btn-group pull-right" role="group" aria-label="...">
+            <button type="button" class="btn btn-sm btn-default active" data-toggle="tooltip" data-placement="top" title="光交箱">
+              光交箱
+            </button>
+            <button type="button" class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="top" title="人手井">
+              人手井
+            </button>
+            <button type="button" class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="top" title="基站">
+              基站
+            </button>
+            <button type="button" class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="top" title="管道">
+              管道
+            </button>
+          </div>
+          <div class="col-lg-2 pull-right">
+            <form class="input-group input-group-sm" action="/asset/search" id='form_asset_search' method="post">
+              <input type="text" class="form-control" id='key' name='key' placeholder="输入小区的名称查询......">
+              <span class="input-group-btn">
+                <button class="btn btn-sm btn-primary" type="button" onclick="javascript:form_asset_search_submit();">
+                  <i class="fa fa-search"></i>
+                </button>
+              </span>
+            </form>
+            <!-- /input-group -->
+          </div>
+          <h3 class="panel-title">哑资源信息概览</h3>
+        </div>
+        <div class="panel-body">
+          <div id="my_map" style="min-height:700px"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&#xD7;</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">徐汇光交GJ102 <a href="#" style="font-size: 12px;" target="_blank"> 详细</a></h4>
+      </div>
+      <div class="modal-body" id='modal-body'>
+        <%= erb :'asset/occ_detail'%>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+  var marker;
+  var map;
+  var map_div_id = 'my_map';
+  var occ_data = []
+
+  $(document).ready(function () {
+    map = new AMap.Map(map_div_id, {
+      resizeEnable: true,
+      zoom: 14,
+      mapStyle: 'amap://styles/grey',
+      center: [121.499859, 31.23966]
+    });
+
+    <% if @result.nil?  %>
+    marker = show_marker(map, "occ", "徐汇光交GJ101", "121.441788", "31.206199");
+    AMap.event.addListener(marker, 'click', function () {
+      $('#myModal').modal('show');
+    });
+    marker = show_marker(map, "occ", "徐汇光交GJ102", "121.44123", "31.201757");
+    AMap.event.addListener(marker, 'click', function () {
+      $('#myModal').modal('show');
+    });
+    marker = show_marker(map, "occ", "徐汇光交GJ103", "121.437668", "31.200436");
+    AMap.event.addListener(marker, 'click', function () {
+      $('#myModal').modal('show');
+    });
+    map.setCenter([121.441788, 31.206199]);
+    <% else  %>
+    marker = show_marker(map, "occ", "徐汇光交GJ101", "121.441788", "31.206199");
+    map.setCenter([121.441788, 31.206199]);
+    AMap.event.addListener(marker, 'click', function () {
+      $('#myModal').modal('show');
+    });
+    <% end  %>
+  });
+
+  function form_asset_search_submit() {
+    $('#form_asset_search').submit();
+  }
+
+  function show_marker(map, type, name, lng, lat) {
+    var marker = new AMap.Marker({
+      position: [
+        lng, lat
+      ],
+      title: name,
+      icon: '/images/icon/occ-default-24.png',
+      map: map
+    });
+    return marker;
+  }
+
+  function closeInfoWindow() {
+    map.clearInfoWindow();
+  }
+</script>

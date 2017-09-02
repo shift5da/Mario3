@@ -1,0 +1,152 @@
+<div class="row">
+
+  <!-- START All Tasks (4) -->
+  <div class="col-lg-3 col-md-6 col-sm-6 m-b-2">
+    <div class="hr-text hr-text-left m-t-0 m-b-0">
+      <h6 class="text-white">
+        <strong>光交箱纤芯利用率</strong>
+        <span class="m-l-1 badge badge-gray-lighter badge-outline"></span>
+      </h6>
+    </div>
+
+    <div class="media">
+      <div class="media-left media-middle">
+        <p class="data-attributes media-object text-left m-t-0 m-b-0">
+          <span data-peity="{ &quot;fill&quot;: [&quot;#2D99DC&quot;, &quot;#0058A1&quot;, &quot;#222d33&quot;, &quot;#E66C40&quot;, &quot;#CB3E4B&quot;],  &quot;innerRadius&quot;: 33, &quot;radius&quot;: 48 }">48,216,24</span>
+        </p>
+      </div>
+      <div class="media-body">
+        <i class="m-l-1 fa fa-fw fa-circle text-primary"></i>
+        <span class="text-white m-r-1">48</span>使用
+        <br>
+        <i class="m-l-1 fa fa-fw fa-circle text-endaveour"></i>
+        <span class="text-white m-r-1">216</span>空
+        <br>
+        <i class="m-l-1 fa fa-fw fa-circle text-swamp"></i>
+        <span class="text-white m-r-1">24</span>损坏
+        <br>
+      </div>
+    </div>
+  </div>
+  <!-- END All Tasks (4) -->
+
+  <!-- START My Stats -->
+  <div class="col-lg-9 col-md-12 col-sm-12">
+    <div class="hr-text hr-text-left m-t-0 m-b-0">
+      <h6 class="text-white">
+        <strong>基本信息</strong>
+      </h6>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-6">
+        <table class="table table-condensed table-hover">
+          <tbody>
+            <tr>
+              <td class="text-white b-a-0">类型</td>
+              <td class="text-right b-a-0">
+                <span class="text-success">一级光交</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-white">所属区域</td>
+              <td class="text-right">
+                <span class="text-success">徐汇区</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-white">容量</td>
+              <td class="text-right">
+                <span class="text-danger">288</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-white">安装方式</td>
+              <td class="text-right">
+                <span class="text-info">室外落地</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-lg-6">
+        <table class="table table-condensed table-hover">
+          <tbody>
+            <tr>
+              <td class="text-white b-a-0">产权性质</td>
+              <td class="text-right b-a-0">
+                <span class="label label-success label-outline">自建</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-white">原始工程编号</td>
+              <td class="text-right">
+                <span class="label label-primary label-outline">传输08-219-001</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-white">原始工程名称</td>
+              <td class="text-right">
+                <span class="label label-info label-outline">08年上海移动第一批光交新建工程</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-white">干线标注</td>
+              <td class="text-right">
+                <span class="label label-gray-lighter label-outline">非干线</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+
+
+  </div>
+  <!-- END My Stats -->
+
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs nav-justified">
+      <li class="active">
+        <a href="#tab1" data-toggle="tab">光纤路由图</a>
+      </li>
+      <li>
+        <a href="#tab2" data-toggle="tab" >光交箱内部结构</a>
+      </li>
+      <li>
+        <a href="#tab3" data-toggle="tab" id='tab_menu_3'>光交箱网络拓扑</a>
+      </li>
+      <li>
+        <a href="#occ_inspection" data-toggle="tab" id='tab_occ_inspection'>光交箱巡检记录</a>
+      </li>
+      <li>
+        <a href="#occ_construction" data-toggle="tab" id='tab_construction'>光交箱施工记录</a>
+      </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div class="tab-pane fade in active" id="tab1">
+        <%= erb :'asset/pon_route'%>
+      </div>
+      <div class="tab-pane fade" id="tab2">
+        <%= erb :'asset/_occ_internal'%>
+      </div>
+      <div class="tab-pane fade" id="tab3">
+        <%= erb :'asset/_occ_topology'%>
+      </div>
+      <div class="tab-pane fade" id="occ_inspection">
+        <%= erb :'asset/_occ_inspection'%>
+      </div>
+      <div class="tab-pane fade" id="occ_construction">
+        <%= erb :'asset/_occ_construction'%>
+      </div>
+    </div>
+  </div>
+</div>

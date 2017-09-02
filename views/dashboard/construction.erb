@@ -1,0 +1,114 @@
+<div class="row">
+
+  <div class="col-lg-12">
+    <div id="community_map" style="height:600px"></div>
+  </div>
+
+  <div class="" style='position: absolute;right:20px;top:10px;'>
+    施工：
+    <div class='button-group' style="background-color: #eb3f2f;">
+      <input type='checkbox' onclick='refresh()' checked name='bg'>人手井
+      <input type='checkbox' onclick='refresh()' checked name='road'>管道
+      <input type='checkbox' onclick='refresh()' name='building'>一级光交箱
+      <input type='checkbox' onclick='refresh()' name='building'>二级光交箱
+      <input type='checkbox' onclick='refresh()' name='building'>光分纤箱
+      <input type='checkbox' onclick='refresh()' name='point'>电杆
+    </div>
+  </div>
+  <script type="text/javascript">
+
+    var map;
+    var marker;
+
+    $(document).ready(function () {
+      // alert(document.body.clientHeight); alert(document.body.offsetHeight);
+      //
+      // alert(document.body.scrollHeight);
+      //
+      // alert(document.body.scrollTop); alert(document.body.scrollLeft); alert(window.screenTop); alert(window.screenLeft); alert(window.screen.height); alert(window.screen.availHeight);
+      $('#community_map').height(window.screen.availHeight);
+      create_map();
+      create_marker();
+    });
+
+    function create_map() {
+      map = new AMap.Map('community_map', {
+        resizeEnable: true,
+        zoom: 12,
+        mapStyle: 'amap://styles/grey',
+        center: [121.487604,31.232067]
+      });
+    }
+
+    function create_marker() {
+      $.getJSON("/data/construction.json", function (data) {
+
+        $.each(data.occ, function (key, val) {
+          marker = new AMap.Marker({
+            position: lnglat_decode(val.position),
+            title: val.name,
+            icon: '/images/occ.png',
+            offset: new AMap.Pixel(-10,-10),
+            map: map
+          });
+
+        });
+
+        $.each(data.pipeline, function (key, val) {
+          var p = [];
+          $.each(val.points, function (k, v) {
+            p.push(lnglat_decode_to_array(v.position));
+          });
+          var polyline = new AMap.Polyline({
+            path: p, //设置线覆盖物路径
+            title: val.name,
+            strokeColor: "#f1c40f", //线颜色
+            strokeOpacity: 1, //线透明度
+            strokeWeight: 5, //线宽
+            strokeStyle: "solid", //线样式
+            strokeDasharray: [10, 5] //补充线样式
+          });
+          polyline.setMap(map);
+        });
+
+        $.each(data.inspection, function (key, val) {
+          var p = [];
+          $.each(val.points, function (k, v) {
+            p.push(lnglat_decode_to_array(v.position));
+          });
+          var polyline = new AMap.Polyline({
+            path: p, //设置线覆盖物路径
+            title: val.name,
+            strokeColor: "#8e44ad", //线颜色
+            strokeOpacity: 1, //线透明度
+            strokeWeight: 5, //线宽
+            strokeStyle: "solid", //线样式
+            strokeDasharray: [10, 5] //补充线样式
+          });
+          polyline.setMap(map);
+        });
+
+      });
+    }
+
+    function lnglat_decode(lnglat) {
+      if (lnglat.indexOf(',') == -1) {
+        alert('error');
+      } else {
+        var s = lnglat.split(',');
+        return new AMap.LngLat(parseFloat(s[0]), parseFloat(s[1]));
+      }
+    }
+
+    function lnglat_decode_to_array(lnglat) {
+      if (lnglat.indexOf(',') == -1) {
+        alert('error');
+      } else {
+        var s = lnglat.split(',');
+        return [
+          parseFloat(s[0]),
+          parseFloat(s[1])
+        ];
+      }
+    }
+  </script>

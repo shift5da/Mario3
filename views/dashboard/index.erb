@@ -1,0 +1,314 @@
+<!-- START Sub-Navbar with Header and Breadcrumbs-->
+<div class="sub-navbar sub-navbar__header-breadcrumbs">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12 sub-navbar-column">
+        <div class="sub-navbar-header">
+          <h3>资源状态监控</h3>
+        </div>
+        <ol class="breadcrumb navbar-text navbar-right no-bg">
+          <li class="current-parent">
+            <a class="current-parent" href="/community/index">
+              <i class="fa fa-fw fa-home"></i>
+            </a>
+          </li>
+          <li class="active">资源状态监控</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid" style="padding-top: 20px;">
+
+  <div class="row">
+    <div class="col-lg-9">
+
+      <div class="panel panel-default">
+        <div class="panel-heading panel-heading b-b-warning b-b-2">
+          <div class="col-xs-3 pull-right">
+            <div class="input-group input-group-sm">
+              <input type="text" class="form-control" placeholder="输入关键字查询">
+              <span class="input-group-btn">
+                <button class="btn btn-sm btn-primary" type="button">
+                  <i class="fa fa-search"></i>
+                </button>
+              </span>
+            </div>
+            <!-- /input-group -->
+          </div>
+          <div class="btn-group pull-right">
+            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              全上海市
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="#">
+                  <i class="fa fa-fw text-gray-lighter fa-angle-rightm-r-1"></i>全上海市</a>
+              </li>
+              <li>
+                <a href="#">
+                  <i class="fa fa-fw text-gray-lighter fa-angle-right m-r-1"></i>普陀区</a>
+              </li>
+              <li>
+                <a href="#">
+                  <i class="fa fa-fw text-gray-lighter fa-angle-right m-r-1"></i>徐汇区</a>
+              </li>
+              <li>
+                <a href="#">
+                  <i class="fa fa-fw text-gray-lighter fa-angle-right m-r-1"></i>静安区</a>
+              </li>
+            </ul>
+          </div>
+          <div class="btn-group pull-right">
+            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              全部告警
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="#">
+                  <i class="fa fa-fw text-gray-lighter fa-angle-right m-r-1"></i>全部告警</a>
+              </li>
+              <li>
+                <a href="#">
+                  <i class="fa fa-fw text-gray-lighter fa-angle-right m-r-1"></i>光交箱状态告警</a>
+              </li>
+              <li>
+                <a href="#">
+                  <i class="fa fa-fw text-gray-lighter fa-angle-right m-r-1"></i>光缆状态监控告警</a>
+              </li>
+              <li>
+                <a href="#">
+                  <i class="fa fa-fw text-gray-lighter fa-angle-right m-r-1"></i>人手井状态监控告警</a>
+              </li>
+            </ul>
+          </div>
+          <h3 class="panel-title">资源状态监控</h3>
+        </div>
+        <div class="panel-body">
+          <div id="my_map" style="min-height:610px"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3">
+
+      <div class="panel panel-default no-bg b-a-2  b-gray-dark">
+        <div class="panel-heading">
+          <div class="row">
+            <div class="col-sm-4 col-xs-4">告警列表</div>
+            <div class="col-sm-4 col-xs-4 col-xs-offset-4 col-sm-offset-4 text-right">
+              <button class="btn btn-xs btn-default">
+                <i class="fa fa-pencil"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- START Scroll Inside Panel -->
+        <div class="scroll-640 custom-scrollbar">
+          <div class="panel-body">
+            <!-- START Timeline - Active Entry (Day) -->
+            <div class="timeline">
+              <!-- Timeline - Badge Date -->
+              <div class="timeline-date">
+                <span class="badge">今天</span>
+              </div>
+              <div class="timeline-item p-r-1">
+                <!-- Timeline - Mini Icon -->
+                <div class="timeline-icon">
+                  <i class="fa fa-fw fa-times-circle text-danger"></i>
+                </div>
+
+                <!-- Timeline - Icon  -->
+                <div class="timeline-item-head clearfix m-b-0">
+                  <!-- Timeline - Header & Subtitle -->
+
+                  <!-- START Avatar, Message & Time -->
+                  <div class="row">
+
+                    <div class="col-lg-12 m-l-1">
+                      <span class="label label-info label-outline">光缆</span>
+                      <span class="label label-danger label-outline">光缆断裂</span>
+                      <br>
+                      <p class="text-white m-t-1">
+                        <span>
+                          <a href="javascript:focus_marker_1()" class="text-white">【浦东】浦东南路和东城路交界处，光缆断裂。</a>
+                        </span>
+                      </p>
+                      <p>
+                        <span>处理状态：</span>
+                        <span class="text-danger">未处理</span>
+                      </p>
+                      <p class="text-nowrap small">
+                        <span>2017-7-16 14:23:12</span>
+                      </p>
+                    </div>
+                  </div>
+                  <!-- END Avatar, Message & Time -->
+
+                </div>
+              </div>
+            </div>
+            <!-- END Timeline - Active Entry (Day) -->
+
+            <!-- START Timeline - Active Entry -->
+            <div class="timeline">
+              <div class="timeline-item p-r-1">
+                <!-- Timeline - Mini Icon -->
+                <div class="timeline-icon">
+                  <i class="fa fa-fw fa-exclamation-circle text-danger"></i>
+                </div>
+
+                <!-- Timeline - Icon  -->
+                <div class="timeline-item-head clearfix m-b-0">
+                  <!-- Timeline - Header & Subtitle -->
+
+                  <!-- START Avatar, Message & Time -->
+                  <div class="row">
+
+                    <div class="col-lg-12 m-l-1">
+                      <span class="label label-info label-outline">光交箱</span>
+                      <span class="label label-danger label-outline">非法开启</span>
+                      <br>
+                      <p class="text-white m-t-1">
+
+                        <a href="javascript:focus_marker_2()" class="text-white">
+                          【徐汇】徐汇光交GJ101被非法开启
+                        </a>
+
+                      </p>
+                      <p>
+                        <span>处理状态：</span>
+                        <span class="text-success">正在赶往现场</span>
+                      </p>
+                      <p class="text-nowrap small">
+                        <span>2017-7-16 14:13:12</span>
+                      </p>
+                    </div>
+                  </div>
+                  <!-- END Avatar, Message & Time -->
+
+                </div>
+              </div>
+            </div>
+            <!-- END Timeline - Active Entry -->
+
+            <!-- START Timeline - Active Entry -->
+            <div class="timeline">
+              <div class="timeline-item p-r-1">
+                <!-- Timeline - Mini Icon -->
+                <div class="timeline-icon">
+                  <i class="fa fa-fw fa-info-circle text-warning"></i>
+                </div>
+
+                <!-- Timeline - Icon  -->
+                <div class="timeline-item-head clearfix m-b-0">
+                  <!-- Timeline - Header & Subtitle -->
+
+                  <!-- START Avatar, Message & Time -->
+                  <div class="row">
+
+                    <div class="col-lg-12 m-l-1">
+
+                      <span class="label label-info label-outline">光交箱</span>
+                      <span class="label label-warning label-outline">施工开启</span>
+                      <br>
+                      <p class="text-white m-t-1">
+                        <a href="javascript:focus_marker_3()" class="text-white">【徐汇】徐汇光交GJ103被开启，施工工单：徐汇光交施工20170712</a>
+                      </p>
+                      <p>
+                        <span>处理状态：</span>
+                        <span class="text-primary">已经处理</span>
+                      </p>
+                      <p class="text-nowrap small">
+                        <span>2017-7-16 10:34:12</span>
+                      </p>
+                      <div class="m-b-1">
+                        <img class="img-rounded avatar avatar-lg" src="/images/occ_scene.png" alt="Avatar">
+                      </div>
+
+                    </div>
+                  </div>
+                  <!-- END Avatar, Message & Time -->
+
+                </div>
+              </div>
+            </div>
+            <!-- END Timeline - Active Entry -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+  var marker1, marker2, marker3;
+  var map;
+
+  $(document).ready(function () {
+    map = new AMap.Map('my_map', {
+      resizeEnable: true,
+      zoom: 12,
+      mapStyle: 'amap://styles/grey',
+      center: [121.499859, 31.23966]
+    });
+
+    marker1 = new AMap.Marker({
+      position: [
+        121.509535,31.239532
+      ],
+      title: '',
+      icon: '/images/icon/pipe-broken-24.png',
+      map: map
+    });
+
+    marker2 = new AMap.Marker({
+      position: [
+        121.441788,31.206199
+      ],
+      title: '徐汇光交GJ101',
+      icon: '/images/icon/occ-warning-24.png',
+      map: map
+    });
+
+    marker3 = new AMap.Marker({
+      position: [
+        121.437668,31.200436
+      ],
+      title: '徐汇光交GJ103',
+      icon: '/images/icon/occ-warning-24.png',
+      map: map
+    });
+
+
+
+  });
+
+  function focus_marker_1() {
+    map.setCenter([121.509535,31.239532]);
+    map.setZoom(18);
+  }
+
+  function focus_marker_2() {
+    map.setCenter([121.441788,31.206199]);
+    map.setZoom(18);
+  }
+
+
+  function focus_marker_3() {
+    map.setCenter([121.437668,31.200436]);
+    map.setZoom(18);
+  }
+
+
+
+
+
+
+
+  //鼠标点击marker弹出自定义的信息窗体
+</script>

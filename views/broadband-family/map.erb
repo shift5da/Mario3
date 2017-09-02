@@ -1,0 +1,221 @@
+<!-- START Sub-Navbar with Header and Breadcrumbs-->
+<div class="sub-navbar sub-navbar__header-breadcrumbs">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12 sub-navbar-column">
+        <div class="sub-navbar-header">
+          <h3>家宽业务</h3>
+        </div>
+        <ol class="breadcrumb navbar-text navbar-right no-bg">
+          <li class="current-parent">
+            <a class="current-parent" href="/">
+              <i class="fa fa-fw fa-home"></i>
+            </a>
+          </li>
+          <li>
+            <a href="/broadband-family">
+              家宽业务
+            </a>
+          </li>
+          <li class="active">地图模式</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid">
+
+  <div class="row">
+    <div class="col-lg-12">
+
+      <div class="panel panel-default">
+        <div class="panel-heading panel-heading b-b-success b-b-2">
+          <div class="col-xs-3 pull-right">
+            <div class="input-group select2-bootstrap-append input-group-sm">
+              <select id="multi-append" class="form-control select2 select2-input">
+                <option value="-1">全部小区</option>
+              </select>
+            </div>
+
+            <!-- /input-group -->
+          </div>
+          <h3 class="panel-title">家宽用户<button type="button" class="btn btn-link btn-sm" onclick="window.location.href='/broadband-family/map'">切换到统计模式<i class="fa m-l-1 text-gray-lighter fa-bar-chart"></i></h3>
+        </div>
+        <div class="panel-body">
+          <div id="my_map" style="min-height:700px"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  var map;
+  var map_div_id = 'my_map';
+  var placeSearch;
+  // var array_community = {
+  //   community: []
+  // }
+  var array_point = ['/images/icon/point-primary-12.png', '/images/icon/point-warning-12.png', '/images/icon/point-danger-12.png'];
+  var select_search = '';
+
+  $(document).ready(function () {
+    map = new AMap.Map(map_div_id, {
+      resizeEnable: true,
+      zoom: 11,
+      mapStyle: 'amap://styles/grey',
+      center: [121.499859, 31.23966]
+    });
+
+    AMap.plugin(['AMap.ToolBar','AMap.Scale'],
+    function(){
+        map.addControl(new AMap.ToolBar());
+        map.addControl(new AMap.Scale());
+      });
+
+    $.getJSON("/data/community.json", function (data) {
+      $.each(data.community, function (key, val) {
+        var marker = new AMap.Marker({
+          position: [
+            val.position.lng, val.position.lat
+          ],
+          title: val.name,
+          icon: array_point[val.bu],
+          offset: new AMap.Pixel(-6, -6),
+          map: map
+        });
+
+
+        var infoWindow_html = "";
+        infoWindow_html = infoWindow_html + "<div class='panel panel-primary  b-primary' style='width: 300px;'>";
+        infoWindow_html = infoWindow_html + "<div class='panel-heading bg-primary'>";
+        infoWindow_html = infoWindow_html + "<div class='row'>";
+        infoWindow_html = infoWindow_html + "<div class='col-lg-9'>" + val.name + "</div>";
+        infoWindow_html = infoWindow_html + "<div class='col-lg-3 text-right'>";
+        infoWindow_html = infoWindow_html + "<a href='javascript:closeInfoWindow();' class='action-panel-close'>";
+        infoWindow_html = infoWindow_html + "<i class='fa fa-fw fa-close text-white'></i>";
+        infoWindow_html = infoWindow_html + "</a>";
+        infoWindow_html = infoWindow_html + "</div>";
+        infoWindow_html = infoWindow_html + "</div>";
+        infoWindow_html = infoWindow_html + "</div>";
+        infoWindow_html = infoWindow_html + "<table class='table table-condensed m-t-1 m-b-1'>";
+        infoWindow_html = infoWindow_html + "<tbody>";
+        infoWindow_html = infoWindow_html + "<tr><td class='v-a-m b-t-0'>小区用户数</td>";
+        infoWindow_html = infoWindow_html + "<td class='v-a-m b-t-0 text-right text-white'>";
+        infoWindow_html = infoWindow_html + "<span>896户</span>";
+        infoWindow_html = infoWindow_html + "</td></tr>";
+        infoWindow_html = infoWindow_html + "<tr><td class='v-a-m b-t-0'>当前在线用户数</td>";
+        infoWindow_html = infoWindow_html + "<td class='v-a-m b-t-0 text-right text-white'>";
+        infoWindow_html = infoWindow_html + "<span>436户</span>";
+        infoWindow_html = infoWindow_html + "</td></tr>";
+        infoWindow_html = infoWindow_html + "<tr><td class='v-a-m b-t-0'>光纤资源使用率</td>";
+        infoWindow_html = infoWindow_html + "<td class='v-a-m b-t-0 text-right text-white'>";
+        infoWindow_html = infoWindow_html + "<span>65%</span>";
+        infoWindow_html = infoWindow_html + "</td></tr>";
+        infoWindow_html = infoWindow_html + "<tr><td class='v-a-m b-t-0'>当前带宽使用率</td>";
+        infoWindow_html = infoWindow_html + "<td class='v-a-m b-t-0 text-right text-white'>";
+        if (val.bu == 0) {
+          infoWindow_html = infoWindow_html + "<span><i class='fa fa-fw fa-circle text-primary m-r-1'></i> 正常</span>";
+        } else if (val.bu == 1){
+          infoWindow_html = infoWindow_html + "<span><i class='fa fa-fw fa-circle text-warning m-r-1'></i> 较高</span>";
+        } else if (val.bu == 2){
+          infoWindow_html = infoWindow_html + "<span><i class='fa fa-fw fa-circle text-danger m-r-1'></i> 高</span>";
+        }
+        infoWindow_html = infoWindow_html + "</td></tr>";
+        infoWindow_html = infoWindow_html + "<tr><td class='v-a-m b-t-0' width='35%'>小区地址</td>";
+        infoWindow_html = infoWindow_html + "<td class='v-a-m b-t-0 text-right text-white'>";
+        infoWindow_html = infoWindow_html + "<span>" + val.address + "</span>";
+        infoWindow_html = infoWindow_html + "</td></tr>";
+        infoWindow_html = infoWindow_html + "<tr><td class='v-a-m b-t-0'></td>";
+        infoWindow_html = infoWindow_html + "<td class='v-a-m b-t-0 text-right text-white'>";
+        infoWindow_html = infoWindow_html + "<span><a href='/broadband-family/community-detail' target='_blank'>详细情况</a></span>";
+        infoWindow_html = infoWindow_html + "</td></tr>";
+        infoWindow_html = infoWindow_html + "</div>";
+
+
+        var infoWindow = new AMap.InfoWindow({
+            isCustom: true,  //使用自定义窗体
+            content: infoWindow_html,
+            autoMove: true,
+            offset: new AMap.Pixel(100, -30)
+        });
+
+        AMap.event.addListener(marker, 'mouseover', function () {
+           infoWindow.open(map, marker.getPosition());
+        });
+
+
+        // $('#multi-append').append('<option value="1" selected="selected">' + val.name + '</option>');
+
+        select_search = select_search + '<option value="' + key + '">' + val.name + '</option>';
+      });
+      $('#multi-append').append(select_search);
+
+    });
+
+
+
+
+    // AMap.service('AMap.PlaceSearch', function () { //回调函数
+    //   //实例化PlaceSearch
+    //   placeSearch = new AMap.PlaceSearch();   //TODO: 使用placeSearch对象调用关键字搜索的功能
+    //   placeSearch.setType('商务住宅');
+    //   placeSearch.setCity('021');
+    //   placeSearch.setPageSize(50);
+    //
+    //   for (var i = 1; i <= 100; i++) {
+    //     placeSearch.setPageIndex(i);
+    //     placeSearch.search('', function (status, result) {
+    //       $.each(result.poiList.pois, function (key, val) {
+    //         new AMap.Marker({position: val.location, title: val.name, icon: '/images/icon/community-24.png', map: map});
+    //
+    //         array_community.community.push({name: val.name, position: val.location, address: val.address, type: val.type, bu: get_random()});
+    //         $('#div_result').text(JSON.stringify(array_community));
+    //       });
+    //
+    //     });
+    //   }
+    // });
+  });
+
+  function get_random(){
+    var t1 = Math.floor(Math.random() * (2 + 1));
+    if (t1 >= 1) {
+      if (Math.floor(Math.random() * (10 + 1)) < 8){
+        t1 = 0;
+      }
+    }
+    return t1;
+  }
+
+  function closeInfoWindow() {
+    map.clearInfoWindow();
+  }
+
+
+  $( "#multi-append" ).change(function() {
+    var current_selected = $('#multi-append').val();
+    $.getJSON("/data/community.json", function (data) {
+      $.each(data.community, function (key, val) {
+        if (key == current_selected){
+          map.setCenter([val.position.lng, val.position.lat]);
+          map.setZoom(18);
+
+          var circle = new AMap.Circle({
+              center: new AMap.LngLat(val.position.lng, val.position.lat),// 圆心位置
+              radius: 20, //半径
+              strokeColor: "#F33", //线颜色
+              strokeOpacity: 1, //线透明度
+              strokeWeight: 3, //线粗细度
+              fillColor: "#ee2200", //填充颜色
+              fillOpacity: 0.35//填充透明度
+          });
+          circle.setMap(map);
+          return;
+        }
+      });
+    });
+  });
+
+</script>

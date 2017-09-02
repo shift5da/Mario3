@@ -1,0 +1,51 @@
+<div class="row" style='margin-top:20px;'>
+
+  <div class="col-lg-12">
+    <div id="chart_occ_topology" style="min-height:900px"></div>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+var myChart_occ_topology;
+$('#tab_menu_3').on('shown.bs.tab', function (e) {
+  if (!myChart_occ_topology) {
+    myChart_occ_topology = echarts.init(document.getElementById('chart_occ_topology'));
+    myChart_occ_topology.showLoading();
+    $.get('/data/community_ftth_topology.json', function (data) {
+      myChart_occ_topology.hideLoading();
+
+      myChart_occ_topology.setOption(option = {
+        title: {
+          text: ''
+        },
+        tooltip: {
+          trigger: 'item',
+          triggerOn: 'mousemove'
+        },
+        series: [
+          {
+            type: 'sankey',
+            layout: 'none',
+            data: data.nodes,
+            links: data.links,
+            itemStyle: {
+              normal: {
+                borderWidth: 1,
+                borderColor: '#aaa'
+              }
+            },
+            label: {
+              normal: {
+                textStyle: {
+                  color: '#35bda8'
+                }
+              }
+            }
+          }
+        ]
+      });
+    });
+  }
+});
+</script>

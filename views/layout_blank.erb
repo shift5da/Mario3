@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>OneRIM平台</title>
+
+    <link rel="stylesheet" href="/style/app.css">
+
+    <script src="/javascript/lib.js"></script>
+
+    <!-- 高德地图 JavaScript -->
+    <script src="http://cache.amap.com/lbs/static/es5.min.js"></script>
+    <script src="http://webapi.amap.com/maps?v=1.3&key=7869a64ef800e0763b199fd87f5b1434"></script>
+    <script src="//webapi.amap.com/ui/1.0/main.js"></script>
+
+    <!-- ECharts JavaScript -->
+    <script src="/echarts/echarts.common.min.js"></script>
+
+  </head>
+
+  <body class="sidebar-disabled navbar-disabled footer-disabled">
+    <div class="container-fluid" style="margin-left:-15px;margin-right:-15px;">
+      <div class="content" style="padding-top: 80px;">
+        <%= yield %>
+      </div>
+
+    </div>
+
+    <!-- Bower Libraries Styles -->
+    <link rel="stylesheet" href="/style/lib.css">
+    <script src="/javascript/app.js"></script>
+    <script src="/javascript/plugins-init.js"></script>
+    <script src="/javascript/common.js"></script>
+    <script src="/javascript/highstock.min.js"></script>
+    <script src="/javascript/highcharts-settings.js"></script>
+    <script src="/javascript/highstock-settings.js"></script>
+    <script src="/javascript/highcharts-highstock-theme.js"></script>
+
+  </body>
+
+</html>
