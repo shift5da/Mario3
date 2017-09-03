@@ -274,6 +274,22 @@
     });
 
 
+    var ws       = new WebSocket('ws://localhost:4567/ws');
+    ws.onopen    = function()  {};
+    ws.onclose   = function()  {}
+    ws.onmessage = function(m) {
+      //当收到消息后，获取最新的incident，并且显示出来
+      if (m.data == "new_incident"){
+        $.getJSON( "/ajax/get_pipelines", function( data ) {
+          $.each(data, function (key, val) {
+
+
+          });
+        });
+      }
+    };
+
+
     // marker1 = new AMap.Marker({
     //   position: [
     //     121.509535,31.239532
