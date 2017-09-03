@@ -5,6 +5,7 @@ require "sinatra/json"
 require 'will_paginate'
 require 'will_paginate/active_record'
 require "will_paginate-bootstrap"
+require 'socket'
 
 
 # 创建一个存放静态文件的目录，主要存放css、js、font、image等文件
@@ -17,6 +18,9 @@ set :database, {
   password: 'root',
   database: 'mario3'
 }
+
+Time.zone = "Beijing"
+ActiveRecord::Base.default_timezone = :local
 
 configure :development do
   set :logging, Logger::DEBUG
@@ -37,10 +41,65 @@ end
 
 class Pipeline < ActiveRecord::Base
   has_many :nodes, -> { order('seq') }, class_name: "PipelineNode", dependent: :destroy
+
+
+  def device_smartpipe
+    DeviceSmartpipe.all.each do |device|
+      return [device, 1] if device.tunnel_1.id = self.id
+      return [device, 2] if device.tunnel_2.id = self.id
+      return [device, 3] if device.tunnel_3.id = self.id
+      return [device, 4] if device.tunnel_4.id = self.id
+    end
+  end
+
+  def rules
+    EngineRule.where(pipeline_id: self.id).order('priority desc')
+  end
+
+  def top_rule position
+    rules = EngineRule.where(pipeline_id: self.id).order('priority desc')
+    rules.each do |rule|
+      if position >= rule.start_position and position <= rule.end_position
+        return rule
+      end
+    end
+  end
 end
 
 class PipelineNode < ActiveRecord::Base
   belongs_to :pipeline
+end
+
+class EngineRule < ActiveRecord::Base
+  belongs_to :pipeline
+end
+
+class DeviceSmartpipe < ActiveRecord::Base
+  belongs_to :tunnel_1, class_name: "Pipeline"
+  belongs_to :tunnel_2, class_name: "Pipeline"
+  belongs_to :tunnel_3, class_name: "Pipeline"
+  belongs_to :tunnel_4, class_name: "Pipeline"
+
+  def pipeline tunnel_id
+    return tunnel_1 if tunnel_id == 1
+    return tunnel_2 if tunnel_id == 2
+    return tunnel_3 if tunnel_id == 3
+    return tunnel_4 if tunnel_id == 4
+
+  end
+end
+
+class Incident < ActiveRecord::Base
+  belongs_to :device, class_name: "DeviceSmartpipe"
+  belongs_to :pipeline, class_name: "Pipeline"
+  belongs_to :rule, class_name: "EngineRule"
+end
+
+class Event < ActiveRecord::Base
+  default_scope { order(created_at: :desc) }
+  belongs_to :device, class_name: "DeviceSmartpipe"
+  belongs_to :pipeline, class_name: "Pipeline"
+  belongs_to :rule, class_name: "EngineRule"
 end
 
 # class OriPipeline < ActiveRecord::Base
@@ -163,6 +222,18 @@ get '/monitor/asset-status' do
   erb :'monitor/asset_status'
 end
 
+get '/alert/incidents' do
+  session[:current_menu] = 'alert'
+  @incidents = Incident.paginate(:page => params[:page])
+  erb :'alert/incidents'
+end
+
+get '/alert/events' do
+  session[:current_menu] = 'alert'
+  @events = Event.paginate(:page => params[:page])
+  erb :'alert/events'
+end
+
 
 get '/setting' do
   session[:current_menu] = 'setting'
@@ -170,24 +241,51 @@ get '/setting' do
 end
 
 
-get '/setting/engine_rule' do
+# 规则 index
+get '/setting/engine_rules' do
   session[:current_menu] = 'setting'
+  @rules = EngineRule.all.order('pipeline_id')
   erb :'setting/engine_rule/index'
 end
 
+# 保存 规则
+post '/setting/engine_rules' do
+  logger.debug "post, /setting/engine_rules"
+  logger.debug request
+
+  rule = EngineRule.find_or_create_by(id: params[:id])
+  rule.name = params[:name]
+  rule.pipeline_id = params[:pipeline_id]
+  rule.start_position = params[:start_position]
+  rule.end_position = params[:end_position]
+  rule.timescope = params[:timescope]
+  rule.count = params[:count]
+  rule.priority = params[:priority]
+  rule.remark = params[:remark]
+  rule.save
+
+  redirect to("/setting/engine_rules")
+
+end
+
+# 删除 pipeline
+get '/setting/engine_rules/delete/:id' do
+  rule = EngineRule.find(params[:id])
+  rule.destroy
+  redirect to('/setting/engine_rules')
+end
+
+# 管线 index
 get '/setting/pipelines' do
   session[:current_menu] = 'setting'
-
   @pipelines = Pipeline.paginate(:page => params[:page])
-  logger.debug "query all pipelines count: #{@pipelines.count}"
-
   erb :'setting/pipelines/index'
 end
 
 # 保存 pipeline
 post '/setting/pipelines' do
 
-  logger.debug "post, /setting/pipelines, save new pipeline"
+  logger.debug "post, /setting/pipelines"
   logger.debug request
 
   pipeline = Pipeline.find_or_create_by(id: params[:id])
@@ -211,6 +309,41 @@ get '/setting/pipelines/delete/:id' do
 end
 
 
+# 智能管道设备 index
+get '/setting/device_smartpipes' do
+  session[:current_menu] = 'setting'
+  @devices = DeviceSmartpipe.paginate(:page => params[:page])
+  erb :'setting/device_smartpipes/index'
+end
+
+# 保存 智能管道设备
+post '/setting/device_smartpipes' do
+
+  logger.debug "post, /setting/device_smartpipes"
+  logger.debug request
+
+  device = DeviceSmartpipe.find_or_create_by(id: params[:id])
+  device.name = params[:name]
+  device.no = params[:no]
+  device.tunnel_1_id = params[:tunnel_1_id]
+  device.tunnel_2_id = params[:tunnel_2_id]
+  device.tunnel_3_id = params[:tunnel_3_id]
+  device.tunnel_4_id = params[:tunnel_4_id]
+  device.remark = params[:remark]
+  device.save
+
+  redirect to("/setting/device_smartpipes")
+end
+
+
+# 删除 智能管道设备
+get '/setting/device_smartpipes/delete/:id' do
+  device = DeviceSmartpipe.find(params[:id])
+  device.destroy
+  redirect to('/setting/device_smartpipes')
+end
+
+
 # -----------------------------------------------
 # Ajax
 # -----------------------------------------------
@@ -220,7 +353,109 @@ get '/ajax/get_pipelines' do
 end
 
 get '/ajax/get_pipeline/:id' do
-  Pipeline.find(params[:id]).to_json(:include => :nodes)
+  Pipeline.find(params[:id]).to_json
+end
+
+get '/ajax/get_engine_rule/:id' do
+  EngineRule.find(params[:id]).to_json
+end
+
+get '/ajax/device_smartpipe/:id' do
+  DeviceSmartpipe.find(params[:id]).to_json
+end
+
+
+# -----------------------------------------------
+# HTTP 请求接口
+# -----------------------------------------------
+
+get '/handle_event' do
+  content = params[:content]
+  unless content.empty?
+
+    #0110 0007 sh0101 2567023, 注意中间无空格 0110是智能管道，0007是消息长度，sh0103是上海1号机1号通道，2567023是25670米处有类型2电镐施工 强度是3级
+
+    logger.debug '/handle_event'
+    logger.debug "content = #{content}"
+    logger.debug "机器标志：" + content[0,4]
+    logger.debug "消息长度：" + content[4,4]
+    logger.debug "城市：" + content[8,2]
+    logger.debug "设备编号：" + content[10,2]
+    logger.debug "通道编号：" + content[12,2]
+    logger.debug "告警位置：" + content[14,5]
+    logger.debug "施工类型：" + content[19,1]
+    logger.debug "施工强度：" + content[20,1]
+
+    # 保存 event
+    event = Event.new
+    device = DeviceSmartpipe.find(content[10,2].to_i)
+    event.device = device
+    event.tunnel = content[12,2].to_i
+    event.position = content[14,5].to_i
+    event.category = content[19,1].to_i
+    event.intensity = content[20,1].to_i
+    event.pipeline = device.pipeline event.tunnel
+    event.rule = event.pipeline.top_rule event.position
+    event.save
+
+    # 根据线路，查找对应的规则（只能对应唯一规则）
+
+    if event.rule.nil?
+      # 如果事件没有匹配的规则
+
+    else
+      rule = event.rule
+      if event.rule.first_occur_at.nil?    #如果是第一次进入规则
+        rule.first_occur_at = Time.now
+        rule.occured_count = 1
+        rule.save
+      else
+        # 检查与第一次发生的时间相比较，是否在timescope之内
+        if (event.created_at.to_i - rule.first_occur_at.to_i) <= rule.timescope
+          # 在 timescope 之内
+
+          if (rule.occured_count + 1) == rule.count
+            # 将rule恢复
+            rule.first_occur_at = nil
+            rule.occured_count = 0
+            rule.save
+
+
+            # 符合timescope 和 count， 产生incident
+            incident = Incident.new
+            incident.device = event.device
+            incident.tunnel = event.tunnel
+            incident.rule = rule
+            incident.pipeline = event.pipeline
+            incident.position = event.position
+            incident.is_viewed = false
+            incident.is_handled = false
+            incident.save
+          else
+            rule.occured_count = rule.occured_count + 1
+            rule.save
+          end
+        else
+          # 超出 timescope，将rule中已经记录的数据更新
+          rule.first_occur_at = Time.now
+          rule.occured_count = 1
+          rule.save
+        end
+
+      end
+
+    end
+
+
+
+
+
+
+    # 产生incident
+
+    # 更新对应的规则
+
+  end
 end
 
 

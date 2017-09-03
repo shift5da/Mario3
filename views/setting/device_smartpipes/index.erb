@@ -15,10 +15,10 @@
 
           <li class="current-parent">
             <a class="current-parent" href="/setting">
-              规则引擎设置
+              设备参数设置
             </a>
           </li>
-          <li class="active">规则设置</li>
+          <li class="active">设备设置</li>
         </ol>
       </div>
     </div>
@@ -35,7 +35,7 @@
       <div class="panel panel-default">
         <div class="panel-heading panel-heading b-b-warning b-b-2">
           <a href="javascript:open_modal()" class="btn btn-primary btn-sm pull-right">新建</a>
-          <h3 class="panel-title">规则</h3>
+          <h3 class="panel-title">设备列表</h3>
         </div>
         <table class="table table-bordered">
           <thead>
@@ -44,31 +44,19 @@
                 <strong>名称</strong>
               </th>
               <th class="small text-muted text-uppercase">
-                <strong>管线名称</strong>
+                <strong>编号</strong>
               </th>
               <th class="small text-muted text-uppercase">
-                <strong>设备名称</strong>
+                <strong>通道1</strong>
               </th>
               <th class="small text-muted text-uppercase">
-                <strong>设备编号</strong>
+                <strong>通道2</strong>
               </th>
               <th class="small text-muted text-uppercase">
-                <strong>设备通道编号</strong>
+                <strong>通道3</strong>
               </th>
               <th class="small text-muted text-uppercase">
-                <strong>起始位置</strong>
-              </th>
-              <th class="small text-muted text-uppercase">
-                <strong>结束位置</strong>
-              </th>
-              <th class="small text-muted text-uppercase">
-                <strong>时间窗口</strong>
-              </th>
-              <th class="small text-muted text-uppercase">
-                <strong>发生次数</strong>
-              </th>
-              <th class="small text-muted text-uppercase">
-                <strong>优先级</strong>
+                <strong>通道4</strong>
               </th>
               <th class="small text-muted text-uppercase">
                 <strong>备注</strong>
@@ -76,66 +64,48 @@
               <th class="small text-muted text-uppercase text-right">
                 <strong>操作</strong>
               </th>
-
-
             </tr>
           </thead>
           <tbody>
-            <% @rules.each do |rule| %>
+            <% @devices.each do |device| %>
             <tr>
               <td class="v-a-m">
-                <a href="javascript:update_rule(<%= rule.id %>);">
-                  <%= rule.name %>
+                <a href="javascript:update_device(<%= device.id %>);">
+                  <%= device.name %>
                 </a>
               </td>
               <td class="v-a-m">
                 <span class="text-white">
-                  <%= rule.pipeline.name %></span>
+                  <%= device.no %></span>
               </td>
               <td class="v-a-m">
                 <span class="text-white">
-                  <%= rule.pipeline.device_smartpipe[0].name %></span>
+                  <%= device.tunnel_1.name unless device.tunnel_1.nil? %></span>
               </td>
               <td class="v-a-m">
                 <span class="text-white">
-                  <%= rule.pipeline.device_smartpipe[0].no %></span>
+                  <%= device.tunnel_2.name unless device.tunnel_2.nil? %></span>
               </td>
               <td class="v-a-m">
                 <span class="text-white">
-                  <%= rule.pipeline.device_smartpipe[1] %></span>
+                  <%= device.tunnel_3.name unless device.tunnel_3.nil? %></span>
               </td>
               <td class="v-a-m">
                 <span class="text-white">
-                  <%= rule.start_position %></span>
+                  <%= device.tunnel_4.name unless device.tunnel_4.nil? %></span>
               </td>
               <td class="v-a-m">
                 <span class="text-white">
-                  <%= rule.end_position %></span>
-              </td>
-              <td class="v-a-m">
-                <span class="text-white">
-                  <%= rule.timescope %></span>
-              </td>
-              <td class="v-a-m">
-                <span class="text-white">
-                  <%= rule.count %></span>
-              </td>
-              <td class="v-a-m">
-                <span class="text-white">
-                  <%= rule.priority %></span>
-              </td>
-              <td class="v-a-m">
-                <span class="text-white">
-                  <%= rule.remark %></span>
+                  <%= device.remark %></span>
               </td>
               <td class="text-right v-a-m">
                 <div class="btn-group" role="group" aria-label="...">
 
-                  <a href="javascript:update_rule(<%= rule.id %>);" class="btn btn-default">
+                  <a href="javascript:update_device(<%= device.id %>);" class="btn btn-default">
                     <i class="fa fa-wrench"></i>
                   </a>
 
-                  <a onclick="return confirm('确认删除吗 ?')" href="/setting/engine_rules/delete/<%= rule.id %>" class="btn btn-default">
+                  <a onclick="return confirm('确认删除吗 ?')" href="/setting/device_smartpipes/delete/<%= device.id %>" class="btn btn-default">
                     <i class="fa fa-close"></i>
                   </a>
                 </div>
@@ -157,9 +127,9 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&#xD7;</span>
         </button>
-        <h4 class="modal-title" id="myModalLabel">新建规则</h4>
+        <h4 class="modal-title" id="myModalLabel">新建设备</h4>
       </div>
-      <form class="form-horizontal" action="/setting/engine_rules" method="post">
+      <form class="form-horizontal" action="/setting/device_smartpipes" method="post">
         <input type="hidden" name="id" id='id'>
         <input type="hidden" id="current_page" name='current_page' value='<%= params[:page] %>'>
 
@@ -171,45 +141,37 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="no" class="col-sm-3 control-label">管线</label>
+            <label for="name" class="col-sm-3 control-label">编号</label>
             <div class="col-sm-9">
-              <select class="form-control" id='pipeline_id' name='pipeline_id'>
+              <input type="text" class="form-control" id="no" name='no'>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="no" class="col-sm-3 control-label">通道1</label>
+            <div class="col-sm-9">
+              <select class="form-control" id='tunnel_1_id' name='tunnel_1_id'>
               </select>
             </div>
           </div>
           <div class="form-group">
-            <label for="start_position" class="col-sm-3 control-label">起始位置</label>
+            <label for="no" class="col-sm-3 control-label">通道2</label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" id="start_position" name="start_position">
-              <span id="helpBlock" class="help-block">请填写数字，单位：米</span>
+              <select class="form-control" id='tunnel_2_id' name='tunnel_2_id'>
+              </select>
             </div>
           </div>
           <div class="form-group">
-            <label for="end_position" class="col-sm-3 control-label">终点位置</label>
+            <label for="no" class="col-sm-3 control-label">通道3</label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" id="end_position" name="end_position">
-              <span id="helpBlock" class="help-block">请填写数字，单位：米</span>
+              <select class="form-control" id='tunnel_3_id' name='tunnel_3_id'>
+              </select>
             </div>
           </div>
           <div class="form-group">
-            <label for="end_position" class="col-sm-3 control-label">时间窗口</label>
+            <label for="no" class="col-sm-3 control-label">通道4</label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" id="timescope" name="timescope">
-              <span id="helpBlock" class="help-block">设定规则的判断时间窗口，请填写数字，单位：秒</span>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="end_position" class="col-sm-3 control-label">次数</label>
-            <div class="col-sm-9">
-              <input type="text" class="form-control" id="count" name="count">
-              <span id="helpBlock" class="help-block">在时间窗口内发生的次数，请填写数据</span>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="end_position" class="col-sm-3 control-label">优先级</label>
-            <div class="col-sm-9">
-              <input type="text" class="form-control" id="priority" name="priority">
-              <span id="helpBlock" class="help-block">数字越大优先级越高，请填写数字</span>
+              <select class="form-control" id='tunnel_4_id' name='tunnel_4_id'>
+              </select>
             </div>
           </div>
           <div class="form-group">
@@ -231,23 +193,29 @@
 
 <script type="text/javascript">
 
-function update_rule(rule_id){
-
+function update_device(device_id){
 
   $.getJSON( "/ajax/get_pipelines", function( data ) {
+    $('#tunnel_1_id').empty();
+    $('#tunnel_2_id').empty();
+    $('#tunnel_3_id').empty();
+    $('#tunnel_4_id').empty();
     $.each(data, function (key, val) {
-      $('#pipeline_id').append('<option value="'+ val.id +'" selected="selected">' + val.name + '</option>');
+      $('#tunnel_1_id').append('<option value="'+ val.id +'" selected="selected">' + val.name + '</option>');
+      $('#tunnel_2_id').append('<option value="'+ val.id +'" selected="selected">' + val.name + '</option>');
+      $('#tunnel_3_id').append('<option value="'+ val.id +'" selected="selected">' + val.name + '</option>');
+      $('#tunnel_4_id').append('<option value="'+ val.id +'" selected="selected">' + val.name + '</option>');
     });
 
-    $.getJSON( "/ajax/get_engine_rule/"+rule_id, function( data ) {
+    $.getJSON( "/ajax/device_smartpipe/"+device_id, function( data ) {
       $('#id').val(data.id);
       $('#name').val(data.name);
-      $('#pipeline_id').val(data.pipeline_id);
-      $('#start_position').val(data.start_position);
-      $('#end_position').val(data.end_position);
-      $('#timescope').val(data.timescope);
-      $('#count').val(data.count);
-      $('#priority').val(data.priority);
+      $('#no').val(data.no);
+      $('#tunnel_1_id').val(data.tunnel_1_id);
+      $('#tunnel_2_id').val(data.tunnel_2_id);
+      $('#tunnel_3_id').val(data.tunnel_3_id);
+      $('#tunnel_4_id').val(data.tunnel_4_id);
+
       $('#remark').val(data.remark);
 
       $('#myModal').modal('show');
@@ -257,9 +225,15 @@ function update_rule(rule_id){
 
 function open_modal(){
   $.getJSON( "/ajax/get_pipelines", function( data ) {
-    $('#pipeline_id').empty();
+    $('#tunnel_1_id').empty();
+    $('#tunnel_2_id').empty();
+    $('#tunnel_3_id').empty();
+    $('#tunnel_4_id').empty();
     $.each(data, function (key, val) {
-      $('#pipeline_id').append('<option value="'+ val.id +'" selected="selected">' + val.name + '</option>');
+      $('#tunnel_1_id').append('<option value="'+ val.id +'" selected="selected">' + val.name + '</option>');
+      $('#tunnel_2_id').append('<option value="'+ val.id +'" selected="selected">' + val.name + '</option>');
+      $('#tunnel_3_id').append('<option value="'+ val.id +'" selected="selected">' + val.name + '</option>');
+      $('#tunnel_4_id').append('<option value="'+ val.id +'" selected="selected">' + val.name + '</option>');
     });
     $('#myModal').modal('show');
   });

@@ -10,23 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170830063335) do
+ActiveRecord::Schema.define(version: 20170903011036) do
 
-  create_table "device_smart_pipe_tunnels", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.bigint "device_smart_pipe_id"
-    t.integer "no"
-    t.string "remark"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["device_smart_pipe_id"], name: "index_device_smart_pipe_tunnels_on_device_smart_pipe_id"
-  end
-
-  create_table "device_smart_pipes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "device_smartpipes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
-    t.string "no"
+    t.integer "no"
+    t.bigint "tunnel_1_id"
+    t.bigint "tunnel_2_id"
+    t.bigint "tunnel_3_id"
+    t.bigint "tunnel_4_id"
     t.string "remark"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["tunnel_1_id"], name: "index_device_smartpipes_on_tunnel_1_id"
+    t.index ["tunnel_2_id"], name: "index_device_smartpipes_on_tunnel_2_id"
+    t.index ["tunnel_3_id"], name: "index_device_smartpipes_on_tunnel_3_id"
+    t.index ["tunnel_4_id"], name: "index_device_smartpipes_on_tunnel_4_id"
   end
 
   create_table "engine_rules", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -38,13 +37,48 @@ ActiveRecord::Schema.define(version: 20170830063335) do
     t.integer "start_position"
     t.integer "end_position"
     t.integer "occured_count"
-    t.datetime "last_occur_at"
+    t.datetime "first_occur_at"
     t.boolean "is_active"
     t.datetime "valid_at"
     t.string "remark"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["pipeline_id"], name: "index_engine_rules_on_pipeline_id"
+  end
+
+  create_table "events", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "device_id"
+    t.integer "tunnel"
+    t.bigint "pipeline_id"
+    t.bigint "rule_id"
+    t.integer "position"
+    t.integer "category"
+    t.integer "intensity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["device_id"], name: "index_events_on_device_id"
+    t.index ["pipeline_id"], name: "index_events_on_pipeline_id"
+    t.index ["rule_id"], name: "index_events_on_rule_id"
+    t.index ["tunnel"], name: "index_events_on_tunnel"
+  end
+
+  create_table "incidents", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "device_id"
+    t.integer "tunnel"
+    t.bigint "pipeline_id"
+    t.bigint "rule_id"
+    t.integer "position"
+    t.integer "category"
+    t.integer "intensity"
+    t.string "related_events"
+    t.boolean "is_handled"
+    t.boolean "is_viewed"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["device_id"], name: "index_incidents_on_device_id"
+    t.index ["pipeline_id"], name: "index_incidents_on_pipeline_id"
+    t.index ["rule_id"], name: "index_incidents_on_rule_id"
+    t.index ["tunnel"], name: "index_incidents_on_tunnel"
   end
 
   create_table "pipe_line", id: :string, limit: 64, default: "", comment: "主键", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", comment: "管道线路" do |t|

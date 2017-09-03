@@ -1,0 +1,114 @@
+<!-- START Sub-Navbar with Header and Breadcrumbs-->
+<div class="sub-navbar sub-navbar__header-breadcrumbs">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12 sub-navbar-column">
+        <div class="sub-navbar-header">
+          <h3>Event</h3>
+        </div>
+        <ol class="breadcrumb navbar-text navbar-right no-bg">
+          <li class="current-parent">
+            <a class="current-parent" href="/monitor/asset-status">
+              <i class="fa fa-fw fa-dashboard"></i>
+            </a>
+          </li>
+          <li class="current-parent">
+            <a class="current-parent" href="/alert/incidents">
+              告警信息列表
+            </a>
+          </li>
+          <li class="active">Event</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- END Sub-Navbar with Header and Breadcrumbs-->
+
+<div class="container-fluid" style="">
+
+  <div class="row">
+    <div class="col-lg-12">
+
+      <div class="panel panel-default">
+        <div class="panel-heading panel-heading b-b-warning b-b-2">
+
+          <h3 class="panel-title">Event</h3>
+        </div>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th class="small text-muted text-uppercase">
+                <strong>设备名称</strong>
+              </th>
+              <th class="small text-muted text-uppercase">
+                <strong>设备通道编号</strong>
+              </th>
+              <th class="small text-muted text-uppercase">
+                <strong>线路名称</strong>
+              </th>
+              <th class="small text-muted text-uppercase">
+                <strong>规则名称</strong>
+              </th>
+              <th class="small text-muted text-uppercase">
+                <strong>告警位置</strong>
+              </th>
+              <th class="small text-muted text-uppercase">
+                <strong>告警类型</strong>
+              </th>
+              <th class="small text-muted text-uppercase">
+                <strong>告警强度</strong>
+              </th>
+              <th class="small text-muted text-uppercase">
+                <strong>发生时间</strong>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @events.each do |event| %>
+            <tr>
+              <td class="v-a-m">
+                <span class="text-white">
+                  <%= event.device.name %></span>
+              </td>
+              <td class="v-a-m">
+                <span class="text-white">
+                  <%= event.tunnel %></span>
+              </td>
+              <td class="v-a-m">
+                <span class="text-white">
+                  <%= event.pipeline.name %></span>
+              </td>
+              <td class="v-a-m">
+                <span class="text-white">
+                  <%= event.rule.name if event.rule %></span>
+              </td>
+              <td class="v-a-m">
+                <span class="text-white">
+                  <%= event.position %></span>
+              </td>
+              <td class="v-a-m">
+                <span class="text-white">
+                  <%= event.category %></span>
+              </td>
+              <td class="v-a-m">
+                <span class="text-white">
+                  <%= event.intensity %></span>
+              </td>
+              <td class="v-a-m">
+                <span class="text-white">
+                  <%= event.created_at %></span>
+              </td>
+
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <div class="panel-footer">
+          <%= will_paginate @events, renderer: BootstrapPagination::Sinatra %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
