@@ -14,6 +14,7 @@ class CreateEngineRules < ActiveRecord::Migration[5.1]
 
       t.boolean :is_active      # boolean 是否有效
       t.datetime :valid_at      #有效时间
+      t.string :related_events    #产生该incident所关联的events，采用"event_id:event_id:event_id"的方式进行分割
 
       t.string :remark
 

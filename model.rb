@@ -60,6 +60,10 @@ class Incident < ActiveRecord::Base
   belongs_to :device, class_name: "DeviceSmartpipe"
   belongs_to :pipeline, class_name: "Pipeline"
   belongs_to :rule, class_name: "EngineRule"
+
+  def get_related_events
+    Event.where(id: self.related_events.split(':'))
+  end
 end
 
 class Event < ActiveRecord::Base

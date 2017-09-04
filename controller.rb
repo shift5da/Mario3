@@ -4,7 +4,6 @@
 
 before do
   logger.debug 'before filter auth start'
-  logger.debug request
 
   logger.debug 'before filter auth: / GET'
   pass if request.path_info.eql? '/' and request.request_method.eql? 'GET'
@@ -16,6 +15,8 @@ before do
   pass if request.path_info.eql? '/logout' and request.request_method.eql? 'GET'
   logger.debug 'before filter websocket: /ws GET'
   pass if request.path_info.eql? '/ws' and request.request_method.eql? 'GET'
+
+  
   redirect "/", 303 if session[:current_user_id] == nil
   logger.debug 'before filter auth end'
 
@@ -231,6 +232,7 @@ get '/handle_event' do
       if event.rule.first_occur_at.nil?    #如果是第一次进入规则
         rule.first_occur_at = Time.now
         rule.occured_count = 1
+        rule.related_events = event.id.to_s + ":"
         rule.save
       else
         # 检查与第一次发生的时间相比较，是否在timescope之内
@@ -238,11 +240,6 @@ get '/handle_event' do
           # 在 timescope 之内
 
           if (rule.occured_count + 1) == rule.count
-            # 将rule恢复
-            rule.first_occur_at = nil
-            rule.occured_count = 0
-            rule.save
-
 
             # 符合timescope 和 count， 产生incident
             incident = Incident.new
@@ -253,18 +250,27 @@ get '/handle_event' do
             incident.position = event.position
             incident.is_viewed = false
             incident.is_handled = false
+            incident.related_events = rule.related_events + event.id.to_s
             incident.save
+
+            # 将rule恢复
+            rule.first_occur_at = nil
+            rule.occured_count = 0
+            rule.related_events = nil
+            rule.save
 
             # 通过websocket 发送通知
             EM.next_tick { settings.sockets.each{|s| s.send("new_incident") } }
           else
             rule.occured_count = rule.occured_count + 1
+            rule.related_events = rule.related_events + event.id.to_s + ":"
             rule.save
           end
         else
           # 超出 timescope，将rule中已经记录的数据更新
-          rule.first_occur_at = Time.now
-          rule.occured_count = 1
+          rule.first_occur_at = nil
+          rule.occured_count = 0
+          rule.related_events = nil
           rule.save
         end
       end
