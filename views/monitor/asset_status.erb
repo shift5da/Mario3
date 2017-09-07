@@ -280,7 +280,7 @@
     ws.onmessage = function(m) {
       //当收到消息后，获取最新的incident，并且显示出来
       if (m.data == "new_incident"){
-        $.getJSON( "/ajax/get_pipelines", function( data ) {
+        $.getJSON( "/ajax/unhandled_incidents", function( data ) {
           $.each(data, function (key, val) {
 
 

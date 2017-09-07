@@ -13,10 +13,12 @@ before do
   pass if request.path_info.eql? '/login' and request.request_method.eql? 'POST'
   logger.debug 'before filter auth: /logout GET'
   pass if request.path_info.eql? '/logout' and request.request_method.eql? 'GET'
+  logger.debug 'before filter auth: /handle_event GET'
+  pass if request.path_info.eql? '/handle_event' and request.request_method.eql? 'GET'
   logger.debug 'before filter websocket: /ws GET'
   pass if request.path_info.eql? '/ws' and request.request_method.eql? 'GET'
 
-  
+
   redirect "/", 303 if session[:current_user_id] == nil
   logger.debug 'before filter auth end'
 
@@ -70,11 +72,26 @@ get '/alert/incidents' do
   erb :'alert/incidents'
 end
 
+# 删除 incident
+get '/alert/incidents/delete/:id' do
+  incident = Incident.find(params[:id])
+  incident.destroy
+  redirect to('/alert/incidents')
+end
+
 get '/alert/events' do
   session[:current_menu] = 'alert'
   @events = Event.paginate(:page => params[:page])
   erb :'alert/events'
 end
+
+# 删除 events
+get '/alert/events/delete/:id' do
+  event = Event.find(params[:id])
+  event.destroy
+  redirect to('/alert/events')
+end
+
 
 
 get '/setting' do
@@ -222,6 +239,8 @@ get '/handle_event' do
     event.rule = event.pipeline.top_rule event.position
     event.save
 
+
+
     # 根据线路，查找对应的规则（只能对应唯一规则）
 
     if event.rule.nil?
@@ -229,52 +248,93 @@ get '/handle_event' do
 
     else
       rule = event.rule
-      if event.rule.first_occur_at.nil?    #如果是第一次进入规则
-        rule.first_occur_at = Time.now
-        rule.occured_count = 1
-        rule.related_events = event.id.to_s + ":"
-        rule.save
+
+      if rule.count == 1
+
+        #当规则的count=1，则表示，每次event都会产生一个incident
+        incident = Incident.new
+        incident.device = event.device
+        incident.tunnel = event.tunnel
+        incident.rule = rule
+        incident.pipeline = event.pipeline
+        incident.position = event.position
+        incident.is_viewed = false
+        incident.is_handled = false
+        incident.save
+        # 通过websocket 发送通知
+        EM.next_tick { settings.sockets.each{|s| s.send("new_incident") } }
       else
-        # 检查与第一次发生的时间相比较，是否在timescope之内
-        if (event.created_at.to_i - rule.first_occur_at.to_i) <= rule.timescope
-          # 在 timescope 之内
-
-          if (rule.occured_count + 1) == rule.count
-
-            # 符合timescope 和 count， 产生incident
-            incident = Incident.new
-            incident.device = event.device
-            incident.tunnel = event.tunnel
-            incident.rule = rule
-            incident.pipeline = event.pipeline
-            incident.position = event.position
-            incident.is_viewed = false
-            incident.is_handled = false
-            incident.related_events = rule.related_events + event.id.to_s
-            incident.save
-
-            # 将rule恢复
-            rule.first_occur_at = nil
-            rule.occured_count = 0
-            rule.related_events = nil
-            rule.save
-
-            # 通过websocket 发送通知
-            EM.next_tick { settings.sockets.each{|s| s.send("new_incident") } }
-          else
-            rule.occured_count = rule.occured_count + 1
-            rule.related_events = rule.related_events + event.id.to_s + ":"
-            rule.save
+        judgment_events = rule.events.first rule.count
+        unless judgment_events.empty?
+          if judgment_events.count == rule.count
+            if (event.created_at.to_i - judgment_events.last.created_at.to_i) <= rule.timescope
+              incident = Incident.new
+              incident.device = event.device
+              incident.tunnel = event.tunnel
+              incident.rule = rule
+              incident.pipeline = event.pipeline
+              incident.position = event.position
+              incident.is_viewed = false
+              incident.is_handled = false
+              incident.related_events = judgment_events.collect{|e| e.id}.join(':')
+              incident.save
+              # 通过websocket 发送通知
+              EM.next_tick { settings.sockets.each{|s| s.send("new_incident") } }
+            end
           end
-        else
-          # 超出 timescope，将rule中已经记录的数据更新
-          rule.first_occur_at = nil
-          rule.occured_count = 0
-          rule.related_events = nil
-          rule.save
         end
       end
     end
+
+
+
+      #
+      # if event.rule.first_occur_at.nil?    #如果是第一次进入规则
+      #   rule.first_occur_at = Time.now
+      #   rule.occured_count = 1
+      #   rule.related_events = event.id.to_s + ":"
+      #   rule.save
+      # else
+      #   # 检查与第一次发生的时间相比较，是否在timescope之内
+      #   if (event.created_at.to_i - rule.first_occur_at.to_i) <= rule.timescope
+      #     # 在 timescope 之内
+      #
+      #     if (rule.occured_count + 1) == rule.count
+      #
+      #       # 符合timescope 和 count， 产生incident
+      #       incident = Incident.new
+      #       incident.device = event.device
+      #       incident.tunnel = event.tunnel
+      #       incident.rule = rule
+      #       incident.pipeline = event.pipeline
+      #       incident.position = event.position
+      #       incident.is_viewed = false
+      #       incident.is_handled = false
+      #       incident.related_events = rule.related_events + event.id.to_s
+      #       incident.save
+      #
+      #       # 将rule恢复
+      #       rule.first_occur_at = nil
+      #       rule.occured_count = 0
+      #       rule.related_events = nil
+      #       rule.save
+      #
+      #       # 通过websocket 发送通知
+      #       EM.next_tick { settings.sockets.each{|s| s.send("new_incident") } }
+      #     else
+      #       rule.occured_count = rule.occured_count + 1
+      #       rule.related_events = rule.related_events + event.id.to_s + ":"
+      #       rule.save
+      #     end
+      #   else
+      #     # 超出 timescope，将rule中已经记录的数据更新
+      #     rule.first_occur_at = nil
+      #     rule.occured_count = 0
+      #     rule.related_events = nil
+      #     rule.save
+      #   end
+      # end
+    # end
   end
 end
 

@@ -33,11 +33,13 @@ class Pipeline < ActiveRecord::Base
 end
 
 class PipelineNode < ActiveRecord::Base
+  default_scope { order(:distance) }
   belongs_to :pipeline
 end
 
 class EngineRule < ActiveRecord::Base
   belongs_to :pipeline
+  has_many :events, -> { order('created_at desc') }, foreign_key: "rule_id"
 end
 
 class DeviceSmartpipe < ActiveRecord::Base

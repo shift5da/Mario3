@@ -40,6 +40,9 @@
           <thead>
             <tr>
               <th class="small text-muted text-uppercase">
+                <strong>#</strong>
+              </th>
+              <th class="small text-muted text-uppercase">
                 <strong>设备名称</strong>
               </th>
               <th class="small text-muted text-uppercase">
@@ -50,6 +53,12 @@
               </th>
               <th class="small text-muted text-uppercase">
                 <strong>规则名称</strong>
+              </th>
+              <th class="small text-muted text-uppercase">
+                <strong>规则timescope</strong>
+              </th>
+              <th class="small text-muted text-uppercase">
+                <strong>规则count</strong>
               </th>
               <th class="small text-muted text-uppercase">
                 <strong>告警位置</strong>
@@ -63,11 +72,18 @@
               <th class="small text-muted text-uppercase">
                 <strong>发生时间</strong>
               </th>
+              <th class="small text-muted text-uppercase">
+                <strong>操作</strong>
+              </th>
             </tr>
           </thead>
           <tbody>
             <% @events.each do |event| %>
             <tr>
+              <td class="v-a-m">
+                <span class="text-white">
+                  <%= event.id %></span>
+              </td>
               <td class="v-a-m">
                 <span class="text-white">
                   <%= event.device.name %></span>
@@ -86,6 +102,14 @@
               </td>
               <td class="v-a-m">
                 <span class="text-white">
+                  <%= event.rule.timescope if event.rule %></span>
+              </td>
+              <td class="v-a-m">
+                <span class="text-white">
+                  <%= event.rule.count if event.rule %></span>
+              </td>
+              <td class="v-a-m">
+                <span class="text-white">
                   <%= event.position %></span>
               </td>
               <td class="v-a-m">
@@ -99,6 +123,12 @@
               <td class="v-a-m">
                 <span class="text-white">
                   <%= event.created_at.strftime("%F %T") %></span>
+              </td>
+
+              <td class="v-a-m">
+                <a onclick="return confirm('确认删除吗 ?')" href="/alert/events/delete/<%= event.id %>" class="btn btn-default">
+                  <i class="fa fa-close"></i>
+                </a>
               </td>
 
             </tr>

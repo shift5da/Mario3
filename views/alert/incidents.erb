@@ -35,6 +35,9 @@
           <thead>
             <tr>
               <th class="small text-muted text-uppercase">
+                <strong>#</strong>
+              </th>
+              <th class="small text-muted text-uppercase">
                 <strong>设备名称</strong>
               </th>
               <th class="small text-muted text-uppercase">
@@ -72,6 +75,10 @@
           <tbody>
             <% @incidents.each do |incident| %>
             <tr>
+              <td class="v-a-m">
+                <span class="text-white">
+                  <%= incident.id %></span>
+              </td>
               <td class="v-a-m">
                 <span class="text-white">
                   <%= incident.device.name %></span>
@@ -117,6 +124,9 @@
                 <a href="javascript:show_related_events(<%= incident.id %>)" class="btn btn-default">
                   查看相关Event
                 </a>
+                <a onclick="return confirm('确认删除吗 ?')" href="/alert/incidents/delete/<%= incident.id %>" class="btn btn-default">
+                  <i class="fa fa-close"></i>
+                </a>
               </td>
             </tr>
             <% end %>
@@ -143,6 +153,9 @@
         <thead>
           <tr>
             <th class="small text-muted text-uppercase">
+              <strong>#</strong>
+            </th>
+            <th class="small text-muted text-uppercase">
               <strong>线路名称</strong>
             </th>
             <th class="small text-muted text-uppercase">
@@ -154,44 +167,47 @@
           </tr>
         </thead>
         <tbody>
-        <tbody>
-      </table>
+          <tbody></table>
 
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
-function show_related_events(incident_id) {
-  $("#table_related_events > tbody > tr").remove();
-  $.getJSON( "/ajax/get_related_events/"+incident_id, function( data ) {
+      function show_related_events(incident_id) {
+        $("#table_related_events > tbody > tr").remove();
+        $.getJSON("/ajax/get_related_events/" + incident_id, function (data) {
 
-    $.each(data, function (key, val) {
-      var temp = "";
-      temp = temp + "<tr>"
-      temp = temp + "<td class='v-a-m'>"
-      temp = temp + "<span class='text-white'>"
-      temp = temp + val.pipeline_name
-      temp = temp + "</span>"
-      temp = temp + "</td>"
-      temp = temp + "<td class='v-a-m'>"
-      temp = temp + "<span class='text-white'>"
-      temp = temp + val.position
-      temp = temp + "</span>"
-      temp = temp + "</td>"
-      temp = temp + "<td class='v-a-m'>"
-      temp = temp + "<span class='text-white'>"
-      temp = temp + val.created_at
-      temp = temp + "</span>"
-      temp = temp + "</td>"
-      temp = temp + "</tr>"
+          $.each(data, function (key, val) {
+            var temp = "";
+            temp = temp + "<tr>"
+            temp = temp + "<td class='v-a-m'>"
+            temp = temp + "<span class='text-white'>"
+            temp = temp + val.event_id
+            temp = temp + "</span>"
+            temp = temp + "</td>"
+            temp = temp + "<td class='v-a-m'>"
+            temp = temp + "<span class='text-white'>"
+            temp = temp + val.pipeline_name
+            temp = temp + "</span>"
+            temp = temp + "</td>"
+            temp = temp + "<td class='v-a-m'>"
+            temp = temp + "<span class='text-white'>"
+            temp = temp + val.position
+            temp = temp + "</span>"
+            temp = temp + "</td>"
+            temp = temp + "<td class='v-a-m'>"
+            temp = temp + "<span class='text-white'>"
+            temp = temp + val.created_at
+            temp = temp + "</span>"
+            temp = temp + "</td>"
+            temp = temp + "</tr>"
 
-      $("#table_related_events > tbody:last-child").append(temp);
-    });
+            $("#table_related_events > tbody:last-child").append(temp);
+          });
 
-    $('#myModal').modal('show');
-  });
-}
-
-</script>
+          $('#myModal').modal('show');
+        });
+      }
+    </script>
