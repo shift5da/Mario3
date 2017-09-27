@@ -17,6 +17,10 @@ before do
   pass if request.path_info.eql? '/handle_event' and request.request_method.eql? 'GET'
   logger.debug 'before filter websocket: /ws GET'
   pass if request.path_info.eql? '/ws' and request.request_method.eql? 'GET'
+  logger.debug 'before filter phone: /phone GET'
+  pass if request.path_info.eql? '/phone' and request.request_method.eql? 'GET'
+  logger.debug 'before filter phone: /login POST'
+  pass if request.path_info.eql? '/phone' and request.request_method.eql? 'POST'
 
 
   redirect "/", 303 if session[:current_user_id] == nil
@@ -56,7 +60,7 @@ post '/login' do
     session[:current_menu] = 'home'
     session[:current_user_id] = user.id
     session[:current_user_name] = user.name
-    redirect '/monitor/asset-status'
+    redirect '/alert/incidents'
   end
 end
 
@@ -203,6 +207,43 @@ get '/setting/device_smartpipes/delete/:id' do
 end
 
 
+get '/testing' do
+  session[:current_menu] = 'testing'
+  @events = Event.paginate(:page => params[:page])
+  erb :'testing/index'
+end
+
+
+
+# -----------------------------------------------
+# Phone 页面
+# -----------------------------------------------
+get '/phone' do
+  erb :'phone/login', :layout => :layout_phone_login
+end
+
+post '/phone' do
+  account = params['account']
+  password = params['password']
+
+  user = User.find_by account: account, password: password
+
+  if user.nil?
+    redirect to('/phone')
+  else
+    session[:current_user_id] = user.id
+    session[:current_user_name] = user.name
+    redirect '/phone/welcome'
+  end
+end
+
+get '/phone/welcome' do
+  erb :'phone/welcome', :layout => :layout_phone
+end
+
+get '/phone/alert_list' do
+  erb :'phone/alert_list', :layout => :layout_phone
+end
 
 
 
@@ -229,7 +270,7 @@ get '/handle_event' do
 
     # 保存 event
     event = Event.new
-    device = DeviceSmartpipe.find(content[10,2].to_i)
+    device = DeviceSmartpipe.find_by_no(content[10,2].to_i)
     event.device = device
     event.tunnel = content[12,2].to_i
     event.position = content[14,5].to_i
@@ -336,6 +377,7 @@ get '/handle_event' do
       # end
     # end
   end
+  redirect '/testing'
 end
 
 
@@ -360,10 +402,6 @@ get '/ws' do
       end
     end
   end
-end
-
-get '/demo' do
-  erb :'demo'
 end
 
 

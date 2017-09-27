@@ -98,7 +98,7 @@
 
                 <li class="dropdown">
                   <a class="dropdown-toggle user-dropdown" data-toggle="dropdown" href="javascript:%20void(0)" role="button">
-                    <span class="m-r-1">王刚</span>
+                    <span class="m-r-1"><%= session[:current_user_name] %></span>
                     <div class="avatar avatar-image avatar-sm avatar-inline loaded">
                       <img alt="User" src="/images/avatar-default-100.png">
                     </div>
@@ -133,13 +133,6 @@
             <!-- START Tree Sidebar Common -->
             <ul class="side-menu">
 
-              <li class="<%= 'active' if session[:current_menu].eql? 'monitor' %>">
-                <a href="/monitor/asset-status"  data-original-title="资源状态监控" data-placement="right" data-toggle="tooltip">
-                  <i class="fa fa-dashboard fa-lg "></i>
-                  <span class="nav-label">资源状态监控</span>
-                </a>
-              </li>
-
               <li class="<%= 'active' if session[:current_menu].eql? 'alert' %>">
                 <a href="/alert/incidents"  data-original-title="告警信息" data-placement="right" data-toggle="tooltip">
                   <i class="fa fa-warning fa-lg "></i>
@@ -154,6 +147,12 @@
                 </a>
               </li>
 
+              <li class="<%= 'active' if session[:current_menu].eql? 'testing' %>">
+                <a href="/testing"  data-original-title="设置" data-placement="right" data-toggle="tooltip">
+                  <i class="fa fa-user-secret fa-lg "></i>
+                  <span class="nav-label">测试</span>
+                </a>
+              </li>
 
             </ul>
             <!-- END Tree Sidebar Common  -->

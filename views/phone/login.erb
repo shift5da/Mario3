@@ -1,0 +1,29 @@
+<form class="" action="/phone" method="post" id='my_form'>
+  <div class="weui-cells weui-cells_form">
+    <div class="weui-cell">
+      <div class="weui-cell__hd">
+        <label for="" class="weui-label">账号</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" type="text" value="" name='account' placeholder="请输入账号"/>
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd">
+        <label for="" class="weui-label">密码</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" type="password" value="" name='password' placeholder="请输入密码"/>
+      </div>
+    </div>
+  </div>
+</form>
+
+<a href="javascript:form_submit()" class="weui-btn weui-btn_primary">登陆</a>
+
+<script type="text/javascript">
+
+  function form_submit() {
+    $('#my_form').submit();
+  }
+</script>

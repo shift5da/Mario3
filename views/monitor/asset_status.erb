@@ -35,7 +35,7 @@
     </div>
     <div class="col-lg-3">
 
-      <div class="panel panel-default no-bg b-a-2  b-gray-dark">
+      <div class="panel panel-default no-bg b-a-2  b-gray-dark" >
         <div class="panel-heading">
           <div class="row">
             <div class="col-sm-4 col-xs-4">告警列表</div>
@@ -48,135 +48,12 @@
         </div>
         <!-- START Scroll Inside Panel -->
         <div class="scroll-1000 custom-scrollbar">
-          <div class="panel-body">
-            <!-- START Timeline - Active Entry (Day) -->
-            <div class="timeline">
-              <!-- Timeline - Badge Date -->
-              <div class="timeline-date">
-                <span class="badge">今天</span>
-              </div>
-              <div class="timeline-item p-r-1">
-                <!-- Timeline - Mini Icon -->
-                <div class="timeline-icon">
-                  <i class="fa fa-fw fa-times-circle text-danger"></i>
-                </div>
-
-                <!-- Timeline - Icon  -->
-                <div class="timeline-item-head clearfix m-b-0">
-                  <!-- Timeline - Header & Subtitle -->
-
-                  <!-- START Avatar, Message & Time -->
-                  <div class="row">
-
-                    <div class="col-lg-12 m-l-1">
-                      <span class="label label-info label-outline">光缆</span>
-                      <span class="label label-danger label-outline">光缆断裂</span>
-                      <br>
-                      <p class="text-white m-t-1">
-                        <span>
-                          <a href="javascript:focus_marker_1()" class="text-white">【浦东】浦东南路和东城路交界处，光缆断裂。</a>
-                        </span>
-                      </p>
-                      <p>
-                        <span>处理状态：</span>
-                        <span class="text-danger">未处理</span>
-                      </p>
-                      <p class="text-nowrap small">
-                        <span>2017-7-16 14:23:12</span>
-                      </p>
-                    </div>
-                  </div>
-                  <!-- END Avatar, Message & Time -->
-
-                </div>
+          <div class="panel-body" >
+            <div class='timeline' id='div_incidents'>
+              <div class='timeline-date'>
+                <span class='badge'>今天</span>
               </div>
             </div>
-            <!-- END Timeline - Active Entry (Day) -->
-
-            <!-- START Timeline - Active Entry -->
-            <div class="timeline">
-              <div class="timeline-item p-r-1">
-                <!-- Timeline - Mini Icon -->
-                <div class="timeline-icon">
-                  <i class="fa fa-fw fa-exclamation-circle text-danger"></i>
-                </div>
-
-                <!-- Timeline - Icon  -->
-                <div class="timeline-item-head clearfix m-b-0">
-                  <!-- Timeline - Header & Subtitle -->
-
-                  <!-- START Avatar, Message & Time -->
-                  <div class="row">
-
-                    <div class="col-lg-12 m-l-1">
-                      <span class="label label-info label-outline">光交箱</span>
-                      <span class="label label-danger label-outline">非法开启</span>
-                      <br>
-                      <p class="text-white m-t-1">
-
-                        <a href="javascript:focus_marker_2()" class="text-white">
-                          【徐汇】徐汇光交GJ101被非法开启
-                        </a>
-
-                      </p>
-                      <p>
-                        <span>处理状态：</span>
-                        <span class="text-success">正在赶往现场</span>
-                      </p>
-                      <p class="text-nowrap small">
-                        <span>2017-7-16 14:13:12</span>
-                      </p>
-                    </div>
-                  </div>
-                  <!-- END Avatar, Message & Time -->
-
-                </div>
-              </div>
-            </div>
-            <!-- END Timeline - Active Entry -->
-
-            <!-- START Timeline - Active Entry -->
-            <div class="timeline">
-              <div class="timeline-item p-r-1">
-                <!-- Timeline - Mini Icon -->
-                <div class="timeline-icon">
-                  <i class="fa fa-fw fa-info-circle text-warning"></i>
-                </div>
-
-                <!-- Timeline - Icon  -->
-                <div class="timeline-item-head clearfix m-b-0">
-                  <!-- Timeline - Header & Subtitle -->
-
-                  <!-- START Avatar, Message & Time -->
-                  <div class="row">
-
-                    <div class="col-lg-12 m-l-1">
-
-                      <span class="label label-info label-outline">光交箱</span>
-                      <span class="label label-warning label-outline">施工开启</span>
-                      <br>
-                      <p class="text-white m-t-1">
-                        <a href="javascript:focus_marker_3()" class="text-white">【徐汇】徐汇光交GJ103被开启，施工工单：徐汇光交施工20170712</a>
-                      </p>
-                      <p>
-                        <span>处理状态：</span>
-                        <span class="text-primary">已经处理</span>
-                      </p>
-                      <p class="text-nowrap small">
-                        <span>2017-7-16 10:34:12</span>
-                      </p>
-                      <div class="m-b-1">
-                        <img class="img-rounded avatar avatar-lg" src="/images/occ_scene.png" alt="Avatar">
-                      </div>
-
-                    </div>
-                  </div>
-                  <!-- END Avatar, Message & Time -->
-
-                </div>
-              </div>
-            </div>
-            <!-- END Timeline - Active Entry -->
           </div>
         </div>
 
@@ -198,9 +75,10 @@
       center: [118.879465,28.924318]
     });
 
+    show_today_incidents();
+
 
     $.getJSON( "/ajax/get_pipelines", function( data ) {
-
       $.each(data, function (key, val) {
         var lines = [];
         $.each(val.nodes, function (k, v) {
@@ -280,12 +158,7 @@
     ws.onmessage = function(m) {
       //当收到消息后，获取最新的incident，并且显示出来
       if (m.data == "new_incident"){
-        $.getJSON( "/ajax/unhandled_incidents", function( data ) {
-          $.each(data, function (key, val) {
-
-
-          });
-        });
+        show_today_incidents();
       }
     };
 
@@ -341,7 +214,42 @@
     map.clearInfoWindow();
   }
 
+  function show_today_incidents(){
+    $.getJSON( "/ajax/unhandled_incidents_today", function( data ) {
+      $.each(data, function (key, val) {
+        var incidents_html = ''
+        incidents_html = incidents_html + "<div class='timeline-item p-r-1'>"
+        incidents_html = incidents_html + "<div class='timeline-icon'>"
+        incidents_html = incidents_html + "<i class='fa fa-fw fa-times-circle text-danger'></i>"
+        incidents_html = incidents_html + "</div>"
+        incidents_html = incidents_html + "<div class='timeline-item-head clearfix m-b-0'>"
+        incidents_html = incidents_html + "<div class='row'>"
+        incidents_html = incidents_html + "<div class='col-lg-12 m-l-1'>"
+        incidents_html = incidents_html + "<span class='label label-info label-outline'>光缆</span>"
+        incidents_html = incidents_html + "<span class='label label-danger label-outline'>光缆断裂</span>"
+        incidents_html = incidents_html + "<br>"
+        incidents_html = incidents_html + "<p class='text-white m-t-1'>"
+        incidents_html = incidents_html + "<span>"
+        incidents_html = incidents_html + "<a href='javascript:focus_marker_1()' class='text-white'>【浦东】浦东南路和东城路交界处，光缆断裂。</a>"
+        incidents_html = incidents_html + "</span>"
+        incidents_html = incidents_html + "</p>"
+        incidents_html = incidents_html + "<p>"
+        incidents_html = incidents_html + "<span>处理状态：</span>"
+        incidents_html = incidents_html + "<span class='text-danger'>未处理</span>"
+        incidents_html = incidents_html + "</p>"
+        incidents_html = incidents_html + "<p class='text-nowrap small'>"
+        incidents_html = incidents_html + "<span>2017-7-16 14:23:12</span>"
+        incidents_html = incidents_html + "</p>"
+        incidents_html = incidents_html + "</div>"
+        incidents_html = incidents_html + "</div>"
+        incidents_html = incidents_html + "</div>"
+        incidents_html = incidents_html + "</div>"
 
+        $('#div_incidents').append(incidents_html);
+      });
+    });
+
+  }
 
 
 

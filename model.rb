@@ -83,11 +83,11 @@ end
 # class OriPipelineNode < ActiveRecord::Base
 #   self.table_name = "pipe_line_node"
 # end
-
-
-
-
-
+#
+#
+#
+#
+#
 # OriPipeline.all.each do |opl|
 #
 #   pl = Pipeline.new

@@ -1,0 +1,147 @@
+<!-- START Sub-Navbar with Header and Breadcrumbs-->
+<div class="sub-navbar sub-navbar__header-breadcrumbs">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12 sub-navbar-column">
+        <div class="sub-navbar-header">
+          <h3>测试-模拟Event</h3>
+        </div>
+        <ol class="breadcrumb navbar-text navbar-right no-bg">
+          <li class="current-parent">
+            <a class="current-parent" href="/alert/incidents">
+              <i class="fa fa-fw fa-home"></i>
+            </a>
+          </li>
+          <li class="active">测试-模拟Event</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- END Sub-Navbar with Header and Breadcrumbs-->
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12">
+      <form class="form-horizontal" method="get" action="/handle_event">
+        <div class="form-group">
+          <label for="inputEmail3" class="col-sm-2 control-label">Event</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" name="content">
+            <span id="helpBlock" class="help-block">在这里填入潘政清程序发出来的字符串，例如：01100007sh01012567023，0110是智能管道，0007是消息长度，sh0103是上海1号机1号通道，2567023是25670米处有类型2电镐施工 强度是3级</span>
+          </div>
+        </div>
+        <div class="form-group m-b-0">
+          <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-default">发送</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="row m-t-2">
+    <div class="col-lg-12">
+      <div class="panel panel-default">
+        <div class="panel-heading panel-heading b-b-warning b-b-2">
+          <h3 class="panel-title">Event</h3>
+        </div>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th class="small text-muted text-uppercase">
+                <strong>#</strong>
+              </th>
+              <th class="small text-muted text-uppercase">
+                <strong>设备名称</strong>
+              </th>
+              <th class="small text-muted text-uppercase">
+                <strong>设备通道编号</strong>
+              </th>
+              <th class="small text-muted text-uppercase">
+                <strong>线路名称</strong>
+              </th>
+              <th class="small text-muted text-uppercase">
+                <strong>规则名称</strong>
+              </th>
+              <th class="small text-muted text-uppercase">
+                <strong>规则timescope</strong>
+              </th>
+              <th class="small text-muted text-uppercase">
+                <strong>规则count</strong>
+              </th>
+              <th class="small text-muted text-uppercase">
+                <strong>告警位置</strong>
+              </th>
+              <th class="small text-muted text-uppercase">
+                <strong>告警类型</strong>
+              </th>
+              <th class="small text-muted text-uppercase">
+                <strong>告警强度</strong>
+              </th>
+              <th class="small text-muted text-uppercase">
+                <strong>发生时间</strong>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @events.each do |event| %>
+            <tr>
+              <td class="v-a-m">
+                <span class="text-white">
+                  <%= event.id %></span>
+              </td>
+              <td class="v-a-m">
+                <span class="text-white">
+                  <%= event.device.name %></span>
+              </td>
+              <td class="v-a-m">
+                <span class="text-white">
+                  <%= event.tunnel %></span>
+              </td>
+              <td class="v-a-m">
+                <span class="text-white">
+                  <%= event.pipeline.name %></span>
+              </td>
+              <td class="v-a-m">
+                <span class="text-white">
+                  <%= event.rule.name if event.rule %></span>
+              </td>
+              <td class="v-a-m">
+                <span class="text-white">
+                  <%= event.rule.timescope if event.rule %></span>
+              </td>
+              <td class="v-a-m">
+                <span class="text-white">
+                  <%= event.rule.count if event.rule %></span>
+              </td>
+              <td class="v-a-m">
+                <span class="text-white">
+                  <%= event.position %></span>
+              </td>
+              <td class="v-a-m">
+                <span class="text-white">
+                  <%= event.category %></span>
+              </td>
+              <td class="v-a-m">
+                <span class="text-white">
+                  <%= event.intensity %></span>
+              </td>
+              <td class="v-a-m">
+                <span class="text-white">
+                  <%= event.created_at.strftime("%F %T") %></span>
+              </td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <div class="panel-footer">
+          <%= will_paginate @events, renderer: BootstrapPagination::Sinatra %>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
